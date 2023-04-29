@@ -22,7 +22,7 @@ public class FoodQuantity {
     @Column(name = "quantity_in_grams", nullable = false)
     private BigDecimal quantityInGrams;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "food_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Food food;
