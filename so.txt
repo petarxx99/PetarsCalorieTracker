@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/20089470/hibernate-is-not-auto-creating-a-table-that-does-not-exist-in-the-db
+
+

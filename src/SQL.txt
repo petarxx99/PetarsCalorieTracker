@@ -1,0 +1,1 @@
+GRANT ALL ON kalorije.* TO 'user23'@'localhost';
