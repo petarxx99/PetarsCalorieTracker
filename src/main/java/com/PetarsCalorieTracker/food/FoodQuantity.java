@@ -2,12 +2,12 @@ package com.PetarsCalorieTracker.food;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "food_quantity")
@@ -26,6 +26,10 @@ public class FoodQuantity {
     @JoinColumn(name = "food_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Food food;
+
+    @OneToMany(mappedBy = "consumedFood")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Set<ConsumedFoodQuantity> consumedFoodQuantities;
 
 
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
@@ -67,6 +71,14 @@ public class FoodQuantity {
 
     public void setFood(Food food) {
         this.food = food;
+    }
+
+    public Set<ConsumedFoodQuantity> getConsumedFoodQuantities() {
+        return consumedFoodQuantities;
+    }
+
+    public void setConsumedFoodQuantities(Set<ConsumedFoodQuantity> consumedFoodQuantities) {
+        this.consumedFoodQuantities = consumedFoodQuantities;
     }
 
     @Override
