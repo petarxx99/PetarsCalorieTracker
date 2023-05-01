@@ -13,7 +13,7 @@ public class Price {
     @NonNull
     private final BigDecimal quantityInGrams;
 
-    private Optional<BigDecimal> pricePer100gOptional;
+    private Optional<BigDecimal> pricePer100gOptional = Optional.empty();
 
     public static Price zero(){
         try{
