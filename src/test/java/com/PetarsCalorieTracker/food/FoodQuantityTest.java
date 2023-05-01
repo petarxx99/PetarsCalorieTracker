@@ -201,4 +201,26 @@ public class FoodQuantityTest {
         FoodQuantity result = new FoodQuantity().createFoodFromIngredients(mixedFood, "chicken breast with ketchup", Optional.empty());
         assertEquals(new BigDecimal(70), result.getQuantityInGrams());
     }
+
+    @Test
+    public void assertThat200gOfMushroomsIs44kcal(){
+        var mushrooms200g = new FoodQuantity(new BigDecimal(200), mushrooms);
+        var listOfFood = new ArrayList<FoodQuantity>();
+        listOfFood.add(mushrooms200g);
+
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(listOfFood, "mushrooms 200g", Optional.empty());
+        assertEquals(new BigDecimal(44), result.toKcal());
+    }
+
+    @Test
+    public void assertThat150gOfChickenBreastAnd20gOfBreadcrumbsHas260kcal(){
+        var chickenBreast50g = new FoodQuantity(new BigDecimal(150), chickenBrest);
+        var breadCrumbs20g = new FoodQuantity(new BigDecimal(20), breadCrumbs);
+        var mixedFood = new ArrayList<FoodQuantity>();
+        mixedFood.add(chickenBreast50g);
+        mixedFood.add(breadCrumbs20g);
+
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(mixedFood, "chicken breast with breadcrumbs", Optional.empty());
+        assertEquals(new BigDecimal(260), result.toKcal());
+    }
 }

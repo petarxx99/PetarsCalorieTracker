@@ -127,6 +127,13 @@ public class FoodQuantity {
     }
 
 
+    public BigDecimal toKcal(){
+        return quantityInGrams.multiply(getFood().getKcalPer100g()).divide(ONE_HUNDRED, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal toProteins(){
+        return quantityInGrams.multiply(getFood().getProteinsPer100g()).divide(ONE_HUNDRED, BigDecimal.ROUND_HALF_UP);
+    }
 
 
     @Override
