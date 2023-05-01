@@ -171,4 +171,12 @@ public class FoodQuantityTest {
         foodQuantity.mixWithAListOfFood("no name", listOfFood );
         assertEquals(BigDecimal.ZERO, foodQuantity.getQuantityInGrams());
     }
+
+    @Test
+    public void testThatNothingIs0grams(){
+        var foodQuantity = new FoodQuantity();
+        var listOfFood = new ArrayList<FoodQuantity>();
+        FoodQuantity result = foodQuantity.createFoodFromIngredients(listOfFood, "no name", Optional.empty());
+        assertEquals(BigDecimal.ZERO, result.getQuantityInGrams());
+    }
 }
