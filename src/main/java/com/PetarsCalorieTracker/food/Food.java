@@ -49,9 +49,9 @@ public class Food {
     @Column(name = "price_per_100g", nullable = true)
     private BigDecimal pricePer100g;
 
-    @OneToMany(mappedBy = "food")
+    @OneToMany(mappedBy = "consumedFood")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private Set<FoodQuantity> foodQuantities;
+    private Set<ConsumedFoodQuantity> consumedFoodQuantities;
 
     private static final BigDecimal oneHundred = new BigDecimal(100);
 
@@ -211,12 +211,12 @@ public class Food {
         this.pricePer100g = pricePer100g;
     }
 
-    public Set<FoodQuantity> getFoodQuantities() {
-        return foodQuantities;
+    public Set<ConsumedFoodQuantity> getConsumedFoodQuantities() {
+        return consumedFoodQuantities;
     }
 
-    public void setFoodQuantities(Set<FoodQuantity> foodQuantities) {
-        this.foodQuantities = foodQuantities;
+    public void setConsumedFoodQuantities(Set<ConsumedFoodQuantity> consumedFoodQuantities) {
+        this.consumedFoodQuantities = consumedFoodQuantities;
     }
 
     @Override
@@ -233,7 +233,6 @@ public class Food {
                 ", fiberPer100g=" + fiberPer100g +
                 ", onePortionSizeInGrams=" + onePortionSizeInGrams +
                 ", pricePer100g=" + pricePer100g +
-                ", number of food quantities in the database=" + foodQuantities.size() +
                 '}';
     }
 

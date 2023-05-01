@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,28 +21,32 @@ public class ConsumedFoodQuantity {
     @Column(name = "time_of_consumption", nullable = false)
     private LocalDateTime localDateTime;
 
+    @NonNull
+    @Column(name = "consumed_food_in_grams", nullable = false)
+    private BigDecimal consumedFoodInGrams;
+
     @ManyToOne(fetch = FetchType.EAGER)
     /* I want all info to be fetched immediately, as time of eating
      without specifying what was eaten doesn't tell me much of anything. */
-    @JoinColumn(name = "food_quantity_id")
+    @JoinColumn(name = "food_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private FoodQuantity consumedFood;
+    private Food consumedFood;
+
+
 
     public ConsumedFoodQuantity(){}
 
-    public ConsumedFoodQuantity(@NonNull LocalDateTime localDateTime) {
+    public ConsumedFoodQuantity(@NonNull LocalDateTime localDateTime, @NonNull FoodQuantity food) {
         this.localDateTime = localDateTime;
+        this.consumedFoodInGrams = food.getQuantityInGrams();
+        this.consumedFood = food.getFood();
     }
 
-    public ConsumedFoodQuantity(@NonNull LocalDateTime localDateTime, FoodQuantity consumedFood) {
-        this.localDateTime = localDateTime;
-        this.consumedFood = consumedFood;
-    }
-
-    public ConsumedFoodQuantity(Long id, @NonNull LocalDateTime localDateTime, FoodQuantity consumedFood) {
+    public ConsumedFoodQuantity(long id, @NonNull LocalDateTime localDateTime, @NonNull FoodQuantity food) {
         this.id = id;
         this.localDateTime = localDateTime;
-        this.consumedFood = consumedFood;
+        this.consumedFoodInGrams = food.getQuantityInGrams();
+        this.consumedFood = food.getFood();
     }
 
     public Long getId() {
@@ -61,11 +66,20 @@ public class ConsumedFoodQuantity {
         this.localDateTime = localDateTime;
     }
 
-    public FoodQuantity getConsumedFood() {
+    @NonNull
+    public BigDecimal getConsumedFoodInGrams() {
+        return consumedFoodInGrams;
+    }
+
+    public void setConsumedFoodInGrams(@NonNull BigDecimal consumedFoodInGrams) {
+        this.consumedFoodInGrams = consumedFoodInGrams;
+    }
+
+    public Food getConsumedFood() {
         return consumedFood;
     }
 
-    public void setConsumedFood(FoodQuantity consumedFood) {
+    public void setConsumedFood(Food consumedFood) {
         this.consumedFood = consumedFood;
     }
 
@@ -73,7 +87,8 @@ public class ConsumedFoodQuantity {
     public String toString() {
         return "ConsumedFoodQuantity{" +
                 "id=" + id +
-                ", localDateTime=" + localDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm")) +
+                ", localDateTime=" + localDateTime +
+                ", consumedFoodInGrams=" + consumedFoodInGrams +
                 ", consumedFood=" + consumedFood +
                 '}';
     }

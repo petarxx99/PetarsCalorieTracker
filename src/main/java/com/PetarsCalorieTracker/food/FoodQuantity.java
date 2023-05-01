@@ -1,96 +1,42 @@
 package com.PetarsCalorieTracker.food;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-@Entity
-@Table(name = "food_quantity")
+
 public class FoodQuantity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "food_quantity_id")
-    private Long id;
-
     @NonNull
-    @Column(name = "quantity_in_grams", nullable = false)
     private BigDecimal quantityInGrams;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "food_id")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @NonNull
     private Food food;
-
-    @OneToMany(mappedBy = "consumedFood")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private Set<ConsumedFoodQuantity> consumedFoodQuantities;
-
 
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
     private final static BigDecimal ZERO = BigDecimal.ZERO;
-    
-    public FoodQuantity(){}
+    private final static String NO_NAME_FOOD = "no name food";
 
-    public FoodQuantity(@NonNull BigDecimal quantityInGrams, Food food) {
+    public FoodQuantity(){
+        this.quantityInGrams = BigDecimal.ZERO;
+        this.food = new Food(NO_NAME_FOOD, ZERO, ZERO, ZERO, ZERO, (short) 0, ZERO, ZERO);
+    }
+    public FoodQuantity(@NonNull BigDecimal quantityInGrams, @NonNull Food food) {
         this.quantityInGrams = quantityInGrams;
         this.food = food;
-    }
-
-    public FoodQuantity(Long id, @NonNull BigDecimal quantityInGrams, Food food) {
-        this.id = id;
-        this.quantityInGrams = quantityInGrams;
-        this.food = food;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @NonNull
-    public BigDecimal getQuantityInGrams() {
-        return quantityInGrams;
-    }
-
-    public void setQuantityInGrams(@NonNull BigDecimal quantityInGrams) {
-        this.quantityInGrams = quantityInGrams;
-    }
-
-    public Food getFood() {
+    public Food getFood(){
         return food;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    @NonNull
+    public BigDecimal getQuantityInGrams(){
+        return quantityInGrams;
     }
-
-    public Set<ConsumedFoodQuantity> getConsumedFoodQuantities() {
-        return consumedFoodQuantities;
-    }
-
-    public void setConsumedFoodQuantities(Set<ConsumedFoodQuantity> consumedFoodQuantities) {
-        this.consumedFoodQuantities = consumedFoodQuantities;
-    }
-
-    @Override
-    public String toString() {
-        return "FoodQuantity{" +
-                "id=" + id +
-                ", quantityInGrams=" + quantityInGrams +
-                ", food=" + food +
-                '}';
-    }
-
-    
 
     public FoodQuantity createFoodFromIngredients(@NonNull List<FoodQuantity> ingredients,
                                           @NonNull String foodName,
@@ -98,7 +44,7 @@ public class FoodQuantity {
         FoodQuantity resultingFoodQuantity = new FoodQuantity(ZERO, new Food(foodName, ZERO, ZERO, ZERO, ZERO, (short) 0, ZERO, ZERO));
         resultingFoodQuantity.mixWithAListOfFood(ingredients);
 
-        Food resultingFood = resultingFoodQuantity.getFood();
+        Food resultingFood = resultingFoodQuantity.food;
         portionSizeInGramsOptional.ifPresent(resultingFood::setOnePortionSizeInGrams);
         return resultingFoodQuantity;
     }
@@ -176,5 +122,15 @@ public class FoodQuantity {
         }
         return number;
     }
-    
+
+
+
+
+    @Override
+    public String toString() {
+        return "FoodQuantity{" +
+                "quantityInGrams=" + quantityInGrams +
+                ", food=" + food +
+                '}';
+    }
 }
