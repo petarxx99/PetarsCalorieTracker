@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +28,7 @@ public class FoodQuantityTest {
     private Food strawberries;
 
     @BeforeEach
-    private void setup(){
+    public void setup() throws Exception{
         tomatoes = new Food("tomatoes",
                 new BigDecimal(18),  //kcal
                 new BigDecimal(0.88), //proteins
@@ -37,8 +38,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 new BigDecimal(1.2), // fiber
                 (short) 50, //portion size in grams
-                new BigDecimal(0.8), // price
-                new BigDecimal(100) // mass in grams of the quantity with the price
+                Optional.of(new Price(new BigDecimal(8)))
         );
 
         chickenBrest = new Food(
@@ -51,8 +51,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 BigDecimal.ZERO, // fiber
                 (short) 200, // portion size in grams
-                new BigDecimal(8.5), // price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(8.5)))
         );
 
         ketchup = new Food(
@@ -65,8 +64,7 @@ public class FoodQuantityTest {
                 new BigDecimal(0), // bad trans fats
                 new BigDecimal(0), // fiber
                 (short) 15, // portion size in grams
-                new BigDecimal(3), // price
-                new BigDecimal(1000) // mass in grams in relation to price
+                Optional.of(new Price(new BigDecimal(0.3)))
         );
 
         oliveOil = new Food(
@@ -79,8 +77,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 BigDecimal.ZERO,
                 (short) 21, // portion size in grams
-                new BigDecimal(22), // price
-                new BigDecimal(1000) // mass in grams in relation to price
+                Optional.of(new Price(new BigDecimal(2.2)))
 
         );
 
@@ -94,8 +91,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, //trans fats
                 new BigDecimal(1.3), //fiber
                 (short) 15, // portion size in grams,
-                new BigDecimal(5), //price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(0.5)))
         );
 
         mushrooms = new Food(
@@ -108,8 +104,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 BigDecimal.ONE, // fiber
                 (short) 100, // portion size in grams
-                new BigDecimal(6), //price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(0.6)))
                 );
 
         wholeEgg = new Food(
@@ -122,8 +117,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 BigDecimal.ZERO, // fiber
                 (short) 45, // portion size in grams (1 egg)
-                new BigDecimal(2.5), // price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(0.25)))
         );
 
         breadCrumbs = new Food(
@@ -136,8 +130,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 new BigDecimal(4.5), // fiber
                 (short) 40, // portion size in grams
-                new BigDecimal(3), // price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(0.3)))
         );
 
         mackerel = new Food(
@@ -150,8 +143,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // trans fats
                 BigDecimal.ZERO, // fiber
                 (short) 180, // portion size in grams
-                new BigDecimal(10), // price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(1)))
                 );
 
         strawberries = new Food(
@@ -164,8 +156,7 @@ public class FoodQuantityTest {
                 BigDecimal.ZERO, // bad trans fats
                 new BigDecimal(2), // fiber
                 (short) 200, // portion size in grams
-                new BigDecimal(4), // price
-                new BigDecimal(1000) // mass in grams in relation to the price
+                Optional.of(new Price(new BigDecimal(0.4)))
         );
 
 

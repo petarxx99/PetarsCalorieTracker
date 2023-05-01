@@ -20,8 +20,12 @@ public class FoodQuantity {
     private final static String NO_NAME_FOOD = "no name food";
 
     public FoodQuantity(){
-        this.quantityInGrams = BigDecimal.ZERO;
-        this.food = new Food(NO_NAME_FOOD, ZERO, ZERO, ZERO, ZERO, (short) 0, ZERO, ZERO);
+        try {
+            this.quantityInGrams = BigDecimal.ZERO;
+            this.food = new Food(NO_NAME_FOOD, ZERO, ZERO, ZERO, ZERO, (short) 0, Optional.of(new Price(ZERO)));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
     public FoodQuantity(@NonNull BigDecimal quantityInGrams, @NonNull Food food) {
         this.quantityInGrams = quantityInGrams;
@@ -103,17 +107,14 @@ public class FoodQuantity {
         ingredientFromSecondFoodPer100g = ifNullThenSetTo0(ingredientFromSecondFoodPer100g);
 
         var totalIngredientFromFirstFood = ingredientFromFirstFoodPer100g.
-                multiply(firstFoodQuantity).
-                divide(ONE_HUNDRED);
+                multiply(firstFoodQuantity);
         var totalIngredientFromSecondFood = ingredientFromSecondFoodPer100g.
-                multiply(secondFoodQuantity).
-                divide(ONE_HUNDRED);
+                multiply(secondFoodQuantity);
         
         var totalIngredient = totalIngredientFromFirstFood.add(totalIngredientFromSecondFood);
         var totalFoodQuantity = firstFoodQuantity.add(secondFoodQuantity);
 
-        var ingredientPer100grams = totalIngredient.multiply(ONE_HUNDRED).
-                                                divide(totalFoodQuantity);
+        var ingredientPer100grams = totalIngredient.divide(totalFoodQuantity, BigDecimal.ROUND_HALF_UP);
         return ingredientPer100grams;
     }
 

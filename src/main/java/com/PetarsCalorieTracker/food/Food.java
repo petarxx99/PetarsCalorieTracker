@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -53,11 +54,11 @@ public class Food {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Set<ConsumedFoodQuantity> consumedFoodQuantities;
 
-    private static final BigDecimal oneHundred = new BigDecimal(100);
+    private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
 
     public Food(){}
 
-    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, BigDecimal price, BigDecimal massInGrams) {
+    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
         this.proteinsPer100g = proteinsPer100g;
@@ -67,10 +68,10 @@ public class Food {
         this.badTransFatsPer100g = badTransFatsPer100g;
         this.fiberPer100g = fiberPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        this.pricePer100g = price.multiply(oneHundred).divide(massInGrams);
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
     }
 
-    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, BigDecimal price, BigDecimal massInGrams) {
+    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
@@ -81,10 +82,10 @@ public class Food {
         this.badTransFatsPer100g = badTransFatsPer100g;
         this.fiberPer100g = fiberPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        this.pricePer100g = price.multiply(oneHundred).divide(massInGrams);
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
     }
 
-    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, BigDecimal price, BigDecimal massInGrams) {
+    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
@@ -92,17 +93,17 @@ public class Food {
         this.carbsPer100g = carbsPer100g;
         this.fatsPer100g = fatsPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        this.pricePer100g = price.multiply(oneHundred).divide(massInGrams);
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
     }
 
-    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, BigDecimal price, BigDecimal massInGrams) {
+    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
         this.proteinsPer100g = proteinsPer100g;
         this.carbsPer100g = carbsPer100g;
         this.fatsPer100g = fatsPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        this.pricePer100g = price.multiply(oneHundred).divide(massInGrams);
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
     }
 
     public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g) {
@@ -239,18 +240,22 @@ public class Food {
 
 
     public Food copyAllButNameAndId(@NonNull String newName){
-        return new Food(
-                newName,
-                getKcalPer100g(),
-                getProteinsPer100g(),
-                getCarbsPer100g(),
-                getFatsPer100g(),
-                getSaturatedFatsPer100g(),
-                getBadTransFatsPer100g(),
-                getFiberPer100g(),
-                getOnePortionSizeInGrams(),
-                getPricePer100g(),
-                new BigDecimal(100));
+        try {
+            return new Food(
+                    newName,
+                    getKcalPer100g(),
+                    getProteinsPer100g(),
+                    getCarbsPer100g(),
+                    getFatsPer100g(),
+                    getSaturatedFatsPer100g(),
+                    getBadTransFatsPer100g(),
+                    getFiberPer100g(),
+                    getOnePortionSizeInGrams(),
+                    Optional.of(new Price(getPricePer100g(), new BigDecimal(100))));
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
