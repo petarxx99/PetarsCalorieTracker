@@ -238,5 +238,19 @@ public class Food {
 
 
 
+    public Food copyAllButNameAndId(@NonNull String newName){
+        return new Food(
+                newName,
+                getKcalPer100g(),
+                getProteinsPer100g(),
+                getCarbsPer100g(),
+                getFatsPer100g(),
+                getSaturatedFatsPer100g(),
+                getBadTransFatsPer100g(),
+                getFiberPer100g(),
+                getOnePortionSizeInGrams(),
+                getPricePer100g(),
+                new BigDecimal(100));
+    }
 
 }

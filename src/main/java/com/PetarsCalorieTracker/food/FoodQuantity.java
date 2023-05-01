@@ -41,53 +41,55 @@ public class FoodQuantity {
     public FoodQuantity createFoodFromIngredients(@NonNull List<FoodQuantity> ingredients,
                                           @NonNull String foodName,
                                           Optional<Short> portionSizeInGramsOptional){
-        FoodQuantity resultingFoodQuantity = new FoodQuantity(ZERO, new Food(foodName, ZERO, ZERO, ZERO, ZERO, (short) 0, ZERO, ZERO));
-        resultingFoodQuantity.mixWithAListOfFood(ingredients);
+        FoodQuantity resultingFoodQuantity = new FoodQuantity();
+        resultingFoodQuantity.mixWithAListOfFood(foodName, ingredients);
 
         Food resultingFood = resultingFoodQuantity.food;
         portionSizeInGramsOptional.ifPresent(resultingFood::setOnePortionSizeInGrams);
         return resultingFoodQuantity;
     }
 
-    public void mixWithAListOfFood(@NonNull List<FoodQuantity> otherFoodQuantities){
-        otherFoodQuantities.forEach(this::mixWithFood);
+    public void mixWithAListOfFood(@NonNull String newName, @NonNull List<FoodQuantity> otherFoodQuantities){
+        otherFoodQuantities.forEach(food -> this.mixWithFood(newName, food));
     }
-    public void mixWithFood(@NonNull FoodQuantity otherFoodQuantity){
+    public void mixWithFood(@NonNull String newName, @NonNull FoodQuantity otherFoodQuantity){
         var otherFood = otherFoodQuantity.food;
         var otherQuantity = otherFoodQuantity.quantityInGrams;
+        Food newFood = food.copyAllButNameAndId(newName);
         
-        food.setKcalPer100g(calculateIngredientPer100g(
+        newFood.setKcalPer100g(calculateIngredientPer100g(
                 food.getKcalPer100g(), quantityInGrams, otherFood.getKcalPer100g(), otherQuantity
         ));
         
-        food.setProteinsPer100g(calculateIngredientPer100g(
+        newFood.setProteinsPer100g(calculateIngredientPer100g(
                 food.getProteinsPer100g(), quantityInGrams, otherFood.getProteinsPer100g(), otherQuantity
         ));
         
-        food.setFatsPer100g(calculateIngredientPer100g(
+        newFood.setFatsPer100g(calculateIngredientPer100g(
                 food.getFatsPer100g(), quantityInGrams, otherFood.getFatsPer100g(), otherQuantity
         ));
         
-        food.setCarbsPer100g(calculateIngredientPer100g(
+        newFood.setCarbsPer100g(calculateIngredientPer100g(
                 food.getCarbsPer100g(), quantityInGrams, otherFood.getCarbsPer100g(), otherQuantity
         ));
         
-        food.setFiberPer100g(calculateIngredientPer100g(
+        newFood.setFiberPer100g(calculateIngredientPer100g(
                 food.getFiberPer100g(), quantityInGrams, otherFood.getFiberPer100g(), otherQuantity
         ));
         
-        food.setBadTransFatsPer100g(calculateIngredientPer100g(
+        newFood.setBadTransFatsPer100g(calculateIngredientPer100g(
                 food.getBadTransFatsPer100g(), quantityInGrams, otherFood.getBadTransFatsPer100g(), otherQuantity
         ));
         
-        food.setSaturatedFatsPer100g(calculateIngredientPer100g(
+        newFood.setSaturatedFatsPer100g(calculateIngredientPer100g(
                 food.getSaturatedFatsPer100g(), quantityInGrams, otherFood.getSaturatedFatsPer100g(), otherQuantity
         ));
         
-        food.setPricePer100g(calculateIngredientPer100g(
+        newFood.setPricePer100g(calculateIngredientPer100g(
                 food.getPricePer100g(), quantityInGrams, otherFood.getPricePer100g(), otherQuantity
         ));
-        
+
+        food = newFood;
         quantityInGrams = quantityInGrams.add(otherQuantity);
     }
     

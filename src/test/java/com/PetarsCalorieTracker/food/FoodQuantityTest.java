@@ -5,6 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FoodQuantityTest {
 
@@ -168,9 +174,10 @@ public class FoodQuantityTest {
 
 
     @Test
-    public void testNothingIs0grams(){
+    public void testThatMixingNothingIs0grams(){
         var foodQuantity = new FoodQuantity();
-        var consumedFood = new ConsumedFoodQuantity(LocalDateTime.now(), foodQuantity);
-        assertEqual
+        var listOfFood = new ArrayList<FoodQuantity>();
+        foodQuantity.mixWithAListOfFood("no name", listOfFood );
+        assertEquals(BigDecimal.ZERO, foodQuantity.getQuantityInGrams());
     }
 }
