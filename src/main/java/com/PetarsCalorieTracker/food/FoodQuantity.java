@@ -50,7 +50,7 @@ public class FoodQuantity {
     }
 
     public void mixWithAListOfFood(@NonNull String newName, @NonNull List<FoodQuantity> otherFoodQuantities){
-        otherFoodQuantities.forEach(food -> this.mixWithFood(newName, food));
+        otherFoodQuantities.forEach(ingredient -> this.mixWithFood(newName, ingredient));
     }
     public void mixWithFood(@NonNull String newName, @NonNull FoodQuantity otherFoodQuantity){
         var otherFood = otherFoodQuantity.food;
