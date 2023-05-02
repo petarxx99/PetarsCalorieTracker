@@ -1,1 +1,1 @@
-
+This is a web application which allows its users to track how many calories they consume.
