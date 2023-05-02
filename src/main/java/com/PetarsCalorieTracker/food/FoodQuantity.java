@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public class FoodQuantity {
 
+    private static int NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT = 5;
+
     @NonNull
     private BigDecimal quantityInGrams;
 
@@ -107,14 +109,14 @@ public class FoodQuantity {
         ingredientFromSecondFoodPer100g = ifNullThenSetTo0(ingredientFromSecondFoodPer100g);
 
         var totalIngredientFromFirstFood = ingredientFromFirstFoodPer100g.
-                multiply(firstFoodQuantity);
+                multiply(firstFoodQuantity).setScale(NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
         var totalIngredientFromSecondFood = ingredientFromSecondFoodPer100g.
-                multiply(secondFoodQuantity);
+                multiply(secondFoodQuantity).setScale(NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
         
-        var totalIngredient = totalIngredientFromFirstFood.add(totalIngredientFromSecondFood);
-        var totalFoodQuantity = firstFoodQuantity.add(secondFoodQuantity);
+        var totalIngredient = totalIngredientFromFirstFood.add(totalIngredientFromSecondFood).setScale(NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
+        var totalFoodQuantity = firstFoodQuantity.add(secondFoodQuantity).setScale(NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
 
-        var ingredientPer100grams = totalIngredient.divide(totalFoodQuantity, BigDecimal.ROUND_HALF_UP);
+        var ingredientPer100grams = totalIngredient.divide(totalFoodQuantity, NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
         return ingredientPer100grams;
     }
 
@@ -128,11 +130,11 @@ public class FoodQuantity {
 
 
     public BigDecimal toKcal(){
-        return quantityInGrams.multiply(getFood().getKcalPer100g()).divide(ONE_HUNDRED, BigDecimal.ROUND_HALF_UP);
+        return quantityInGrams.multiply(getFood().getKcalPer100g()).divide(ONE_HUNDRED, NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal toProteins(){
-        return quantityInGrams.multiply(getFood().getProteinsPer100g()).divide(ONE_HUNDRED, BigDecimal.ROUND_HALF_UP);
+        return quantityInGrams.multiply(getFood().getProteinsPer100g()).divide(ONE_HUNDRED, NUMBER_OF_DIGITS_RIGHT_TO_DECIMAL_POINT, BigDecimal.ROUND_HALF_UP);
     }
 
 
