@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 public class Price {
+    private static final int SCALE = 5;
 
     @NonNull
     private final BigDecimal price;
@@ -39,9 +40,9 @@ public class Price {
         quantityInGrams = BigDecimal.ONE;
     }
 
-    public BigDecimal calculatePricePer100grams(){
+    public BigDecimal getPricePer100grams(){
         if (pricePer100gOptional.isEmpty()){
-            pricePer100gOptional = Optional.of(price.multiply(new BigDecimal(100)).divide(quantityInGrams, BigDecimal.ROUND_HALF_UP));
+            pricePer100gOptional = Optional.of(price.multiply(new BigDecimal(100)).divide(quantityInGrams, SCALE, BigDecimal.ROUND_HALF_UP));
         }
         return pricePer100gOptional.get();
     }
@@ -52,7 +53,7 @@ public class Price {
             assert (otherPriceAsObject != null);
             Price otherPrice = (Price) otherPriceAsObject;
 
-            return calculatePricePer100grams().equals(otherPrice.calculatePricePer100grams());
+            return getPricePer100grams().equals(otherPrice.getPricePer100grams());
         } catch(Exception e){
             e.printStackTrace();
             return false;

@@ -68,7 +68,7 @@ public class Food {
         this.badTransFatsPer100g = badTransFatsPer100g;
         this.fiberPer100g = fiberPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
     public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
@@ -82,7 +82,7 @@ public class Food {
         this.badTransFatsPer100g = badTransFatsPer100g;
         this.fiberPer100g = fiberPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
     public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
@@ -93,7 +93,7 @@ public class Food {
         this.carbsPer100g = carbsPer100g;
         this.fatsPer100g = fatsPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
     public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
@@ -103,7 +103,7 @@ public class Food {
         this.carbsPer100g = carbsPer100g;
         this.fatsPer100g = fatsPer100g;
         this.onePortionSizeInGrams = onePortionSizeInGrams;
-        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.calculatePricePer100grams());
+        price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
     public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g) {
