@@ -1,6 +1,0 @@
-CREATE TABLE hrana_na_100grama (hrana_id int primary key auto_increment,
-kcal_na_100g float not null, proteini_na_100g float not null, ugljeni_hidrati_na_100g
-, trans_masti_na_100g float);
-
-
-
