@@ -71,7 +71,7 @@ public class PriceTest {
     }
 
     @Test
-    public void testThatPrice20For50000gramsIs0Point4Per100grams(){
+    public void testThatPrice20For50000gramsIs0Point04Per100grams(){
         var price = Price.zero();
         try{
             price = new Price(new BigDecimal(20), new BigDecimal(50000));
