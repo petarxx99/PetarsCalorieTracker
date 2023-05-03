@@ -1,5 +1,6 @@
 package com.PetarsCalorieTracker.food;
 
+import com.PetarsCalorieTracker.price.Price;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;

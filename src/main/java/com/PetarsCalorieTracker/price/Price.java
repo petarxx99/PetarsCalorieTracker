@@ -1,4 +1,4 @@
-package com.PetarsCalorieTracker.food;
+package com.PetarsCalorieTracker.price;
 
 import org.springframework.lang.NonNull;
 
