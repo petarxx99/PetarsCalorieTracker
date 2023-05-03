@@ -51,7 +51,7 @@ public class Food {
     @Column(name = "price_per_100g", nullable = true)
     private BigDecimal pricePer100g;
 
-    @OneToMany(mappedBy = "consumedFood")
+    @OneToMany(mappedBy = "consumedFood", fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Set<ConsumedFoodQuantity> consumedFoodQuantities;
 
