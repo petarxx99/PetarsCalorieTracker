@@ -9,3 +9,7 @@ Also, if you run the app while the configuration was on update and now you've ch
 you need to delete the target folder.
 In general, whenever you change anything in the application.properties file
 you need to delete the target folder.
+
+Don't forget to change the username, password and the schema name in the spring.datasource.url
+in the src > main > resources > application.properties file
+before running the app.
