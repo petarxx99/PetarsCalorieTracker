@@ -252,7 +252,7 @@ public class Food {
                     getBadTransFatsPer100g(),
                     getFiberPer100g(),
                     getOnePortionSizeInGrams(),
-                    Optional.of(new Price(getPricePer100g(), new BigDecimal(100))));
+                    Optional.of(new Price(getPricePer100g(), ONE_HUNDRED)));
         } catch(Exception e){
             e.printStackTrace();
             return null;
