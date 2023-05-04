@@ -182,10 +182,10 @@ public class FoodQuantityTest {
     @Test
     public void testThat50gramsOf1FoodIs50Grams(){
         var tomatoes50g = new FoodQuantity(new BigDecimal(50), tomatoes);
-        var listOfFood = new ArrayList<FoodQuantity>();
-        listOfFood.add(tomatoes50g);
+        var ingredients = new ArrayList<FoodQuantity>();
+        ingredients.add(tomatoes50g);
 
-        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(listOfFood, "tomatoes 50g", Optional.empty());
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "tomatoes 50g", Optional.empty());
         assertEquals(new BigDecimal(50), result.getQuantityInGrams());
     }
 
@@ -193,11 +193,11 @@ public class FoodQuantityTest {
     public void testThat50gramsPlus20GramsIs70Grams(){
         var chickenBreast50g = new FoodQuantity(new BigDecimal(50), chickenBrest);
         var ketchup20g = new FoodQuantity(new BigDecimal(20), ketchup);
-        var mixedFood = new ArrayList<FoodQuantity>();
-        mixedFood.add(chickenBreast50g);
-        mixedFood.add(ketchup20g);
+        var ingredients = new ArrayList<FoodQuantity>();
+        ingredients.add(chickenBreast50g);
+        ingredients.add(ketchup20g);
 
-        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(mixedFood, "chicken breast with ketchup", Optional.empty());
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "chicken breast with ketchup", Optional.empty());
         assertEquals(new BigDecimal(70), result.getQuantityInGrams());
     }
 
@@ -215,11 +215,11 @@ public class FoodQuantityTest {
     public void assertThat150gOfChickenBreastAnd20gOfBreadcrumbsHas260kcal(){
         var chickenBreast50g = new FoodQuantity(new BigDecimal(150), chickenBrest);
         var breadCrumbs20g = new FoodQuantity(new BigDecimal(20), breadCrumbs);
-        var mixedFood = new ArrayList<FoodQuantity>();
-        mixedFood.add(chickenBreast50g);
-        mixedFood.add(breadCrumbs20g);
+        var ingredients = new ArrayList<FoodQuantity>();
+        ingredients.add(chickenBreast50g);
+        ingredients.add(breadCrumbs20g);
 
-        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(mixedFood, "chicken breast with breadcrumbs", Optional.empty());
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "chicken breast with breadcrumbs", Optional.empty());
         assertEquals(new BigDecimal(260), result.toKcal().setScale(0, BigDecimal.ROUND_HALF_UP));
     }
 
@@ -229,12 +229,12 @@ public class FoodQuantityTest {
         var skusa175g = new FoodQuantity(new BigDecimal(175), skusaFish);
         var ketchup10g = new FoodQuantity(new BigDecimal(10), ketchup);
         var oil20g = new FoodQuantity(new BigDecimal(20), oliveOil);
-        var mixedFood = new ArrayList<FoodQuantity>();
-        mixedFood.add(skusa175g);
-        mixedFood.add(ketchup10g);
-        mixedFood.add(oil20g);
+        var ingredients = new ArrayList<FoodQuantity>();
+        ingredients.add(skusa175g);
+        ingredients.add(ketchup10g);
+        ingredients.add(oil20g);
 
-        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(mixedFood, "n", Optional.empty());
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "n", Optional.empty());
         assertTrue(new BigDecimal(249).compareTo(result.getFood().getKcalPer100g()) > 0);
         assertTrue(new BigDecimal(248.5).compareTo(result.getFood().getKcalPer100g()) < 0);
         assertEquals(new BigDecimal(510), result.toKcal().setScale(0, BigDecimal.ROUND_HALF_UP));
@@ -246,12 +246,12 @@ public class FoodQuantityTest {
         var chickenBreast137g = new FoodQuantity(new BigDecimal(137), chickenBrest);
         var wholeEgg39g = new FoodQuantity(new BigDecimal(39), wholeEgg);
         var mushrooms217g = new FoodQuantity(new BigDecimal(217), mushrooms);
-        var mixedFood = new ArrayList<FoodQuantity>();
-        mixedFood.add(chickenBreast137g);
-        mixedFood.add(wholeEgg39g);
-        mixedFood.add(mushrooms217g);
+        var ingredients = new ArrayList<FoodQuantity>();
+        ingredients.add(chickenBreast137g);
+        ingredients.add(wholeEgg39g);
+        ingredients.add(mushrooms217g);
 
-        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(mixedFood, "", Optional.empty());
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "", Optional.empty());
         assertEquals(new BigDecimal(42.46).setScale(2, BigDecimal.ROUND_HALF_UP), result.toProteins().setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
