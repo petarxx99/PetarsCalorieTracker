@@ -166,16 +166,16 @@ public class FoodQuantityTest {
     @Test
     public void testThatMixingNothingIs0grams(){
         var foodQuantity = new FoodQuantity();
-        var listOfFood = new ArrayList<FoodQuantity>();
-        foodQuantity.mixWithAListOfFood("no name", listOfFood );
+        var ingredients = new ArrayList<FoodQuantity>();
+        foodQuantity.mixWithAListOfFood("no name", ingredients );
         assertEquals(BigDecimal.ZERO, foodQuantity.getQuantityInGrams());
     }
 
     @Test
     public void testThatNothingIs0grams(){
         var foodQuantity = new FoodQuantity();
-        var listOfFood = new ArrayList<FoodQuantity>();
-        FoodQuantity result = foodQuantity.createFoodFromIngredients(listOfFood, "no name", Optional.empty());
+        var ingredients = new ArrayList<FoodQuantity>();
+        FoodQuantity result = foodQuantity.createFoodFromIngredients(ingredients, "no name", Optional.empty());
         assertEquals(BigDecimal.ZERO, result.getQuantityInGrams());
     }
 
@@ -204,10 +204,10 @@ public class FoodQuantityTest {
     @Test
     public void assertThat200gOfMushroomsIs44kcal(){
         var mushrooms200g = new FoodQuantity(new BigDecimal(200), mushrooms);
-        var listOfFood = new ArrayList<FoodQuantity>();
-        listOfFood.add(mushrooms200g);
+        var ingredients = new ArrayList<FoodQuantity>();
+        ingredients.add(mushrooms200g);
 
-        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(listOfFood, "mushrooms 200g", Optional.empty());
+        FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "mushrooms 200g", Optional.empty());
         assertEquals(new BigDecimal(44), result.toKcal().setScale(0, BigDecimal.ROUND_HALF_UP));
     }
 
