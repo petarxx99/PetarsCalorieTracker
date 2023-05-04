@@ -225,7 +225,7 @@ public class FoodQuantityTest {
 
 
     @Test
-    public void assertThat175gOfSkusaFish10gOfKetchup20gOfOilHas413Kcal(){
+    public void assertThat175gOfSkusaFish10gOfKetchup20gOfOilHas510Kcal(){
         var skusa175g = new FoodQuantity(new BigDecimal(175), skusaFish);
         var ketchup10g = new FoodQuantity(new BigDecimal(10), ketchup);
         var oil20g = new FoodQuantity(new BigDecimal(20), oliveOil);
