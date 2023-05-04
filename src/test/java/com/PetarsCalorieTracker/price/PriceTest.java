@@ -19,9 +19,9 @@ public class PriceTest {
 
     @Test
     public void testThatPrice151is151(){
-        var price = new Price(new BigDecimal(51));
+        var price = new Price(new BigDecimal(151));
         assertEquals(
-                new BigDecimal(51).setScale(0, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(151).setScale(0, BigDecimal.ROUND_HALF_UP),
                 price.getPricePer100grams().setScale(0, BigDecimal.ROUND_HALF_UP)
         );
     }
