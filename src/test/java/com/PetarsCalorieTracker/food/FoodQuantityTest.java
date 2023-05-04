@@ -242,7 +242,7 @@ public class FoodQuantityTest {
 
 
     @Test
-    public void testThat137gOfChickenBreast39gOfWholeEgg217gOfMushroomsEquals42Point46Proteins(){
+    public void testThat137gOfChickenBreast39gOfWholeEgg217gOfMushroomsHas42Point46GramsOfProtein(){
         var chickenBreast137g = new FoodQuantity(new BigDecimal(137), chickenBrest);
         var wholeEgg39g = new FoodQuantity(new BigDecimal(39), wholeEgg);
         var mushrooms217g = new FoodQuantity(new BigDecimal(217), mushrooms);
@@ -252,7 +252,10 @@ public class FoodQuantityTest {
         ingredients.add(mushrooms217g);
 
         FoodQuantity result = new FoodQuantity().createFoodFromIngredients(ingredients, "", Optional.empty());
-        assertEquals(new BigDecimal(42.46).setScale(2, BigDecimal.ROUND_HALF_UP), result.toProteins().setScale(2, BigDecimal.ROUND_HALF_UP));
+        assertEquals(
+                new BigDecimal(42.46).setScale(2, BigDecimal.ROUND_HALF_UP),
+                result.toProteins().setScale(2, BigDecimal.ROUND_HALF_UP)
+        );
     }
 
 }
