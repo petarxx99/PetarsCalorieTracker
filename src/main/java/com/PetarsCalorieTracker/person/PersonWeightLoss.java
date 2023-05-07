@@ -7,7 +7,7 @@ import org.hibernate.annotations.Cascade;
 import java.util.Set;
 
 @Entity
-@Table(name = "people")
+@Table(name = "people_weight_loss")
 public class PersonWeightLoss{
 
     @Id
