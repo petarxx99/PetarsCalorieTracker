@@ -1,5 +1,6 @@
 package com.PetarsCalorieTracker.food;
 
+import com.PetarsCalorieTracker.person.PersonWeightLoss;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
@@ -33,21 +34,34 @@ public class ConsumedFoodQuantity {
     private Food consumedFood;
 
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_id")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private PersonWeightLoss personWeightLoss;
 
     public ConsumedFoodQuantity(){}
 
-    public ConsumedFoodQuantity(@NonNull LocalDateTime localDateTime, @NonNull FoodQuantity food) {
+    public ConsumedFoodQuantity(@NonNull LocalDateTime localDateTime,
+                                @NonNull FoodQuantity food,
+                                @NonNull PersonWeightLoss personWeightLoss) {
         this.localDateTime = localDateTime;
         this.consumedFoodInGrams = food.getQuantityInGrams();
         this.consumedFood = food.getFood();
+        this.personWeightLoss = personWeightLoss;
     }
 
-    public ConsumedFoodQuantity(long id, @NonNull LocalDateTime localDateTime, @NonNull FoodQuantity food) {
+    public ConsumedFoodQuantity(long id,
+                                @NonNull LocalDateTime localDateTime,
+                                @NonNull FoodQuantity food,
+                                @NonNull PersonWeightLoss personWeightLoss) {
         this.id = id;
         this.localDateTime = localDateTime;
         this.consumedFoodInGrams = food.getQuantityInGrams();
         this.consumedFood = food.getFood();
+        this.personWeightLoss = personWeightLoss;
     }
+
+
 
     public Long getId() {
         return id;
@@ -81,6 +95,14 @@ public class ConsumedFoodQuantity {
 
     public void setConsumedFood(Food consumedFood) {
         this.consumedFood = consumedFood;
+    }
+
+    public PersonWeightLoss getPersonWeightLoss() {
+        return personWeightLoss;
+    }
+
+    public void setPersonWeightLoss(PersonWeightLoss personWeightLoss) {
+        this.personWeightLoss = personWeightLoss;
     }
 
     @Override
