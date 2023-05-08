@@ -32,6 +32,10 @@ public class PersonWeightLoss{
 
     public PersonWeightLoss(){}
 
+    public PersonWeightLoss(PersonBasicInfo personBasicInfo){
+        this.personBasicInfo = personBasicInfo;
+    }
+
     public Long getId() {
         return id;
     }

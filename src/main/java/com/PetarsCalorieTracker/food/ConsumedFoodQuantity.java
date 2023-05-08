@@ -29,13 +29,13 @@ public class ConsumedFoodQuantity {
     @ManyToOne(fetch = FetchType.EAGER)
     /* I want all info to be fetched immediately, as time of eating
      without specifying what was eaten doesn't tell me much of anything. */
-    @JoinColumn(name = "food_id")
+    @JoinColumn(name = "fk_consumed_food_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Food consumedFood;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "fk_person_that_eats_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private PersonWeightLoss personWeightLoss;
 

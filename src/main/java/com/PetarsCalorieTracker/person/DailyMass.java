@@ -25,7 +25,7 @@ public class DailyMass {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "fk_id_of_persons_mass")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private PersonWeightLoss personWeightLoss;
 
