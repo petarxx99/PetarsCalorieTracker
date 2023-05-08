@@ -3,6 +3,7 @@ package com.PetarsCalorieTracker.person;
 import com.PetarsCalorieTracker.food.ConsumedFoodQuantity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
+import org.springframework.lang.NonNull;
 
 import java.util.Set;
 
@@ -13,6 +14,10 @@ public class PersonWeightLoss{
     @Id
     @Column(name = "basic_persons_info_id")
     private Long id;
+
+
+    @Column(name = "height_in_centimeters")
+    private short heightInCentimeters;
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
@@ -32,8 +37,10 @@ public class PersonWeightLoss{
 
     public PersonWeightLoss(){}
 
-    public PersonWeightLoss(PersonBasicInfo personBasicInfo){
+    public PersonWeightLoss(@NonNull PersonBasicInfo personBasicInfo, short heightInCentimeters)
+    {
         this.personBasicInfo = personBasicInfo;
+        this.heightInCentimeters = heightInCentimeters;
     }
 
     public Long getId() {
@@ -66,5 +73,13 @@ public class PersonWeightLoss{
 
     public void setConsumedFoodQuantities(Set<ConsumedFoodQuantity> consumedFoodQuantities) {
         this.consumedFoodQuantities = consumedFoodQuantities;
+    }
+
+    public short getHeightInCentimeters() {
+        return heightInCentimeters;
+    }
+
+    public void setHeightInCentimeters(short heightInCentimeters) {
+        this.heightInCentimeters = heightInCentimeters;
     }
 }
