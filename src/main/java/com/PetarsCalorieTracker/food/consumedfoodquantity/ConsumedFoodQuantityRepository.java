@@ -15,8 +15,9 @@ public interface ConsumedFoodQuantityRepository extends JpaRepository<ConsumedFo
             "DATE(cfood.time_of_consumption) = :date", nativeQuery = true)
     public List<ConsumedFoodQuantity> getConsumedFoodInADay(@Param("date")LocalDate date);
 
-
-    @Query(value = "SELECT cfood FROM ConsumedFoodQuantity cfood LEFT JOIN " +
+    /* FETCH is neccessary because I put the strategy for fetch to be eager, not lazy. I want all the data
+     * from the joined tables to be fetched immediatelly. */
+    @Query(value = "SELECT cfood FROM ConsumedFoodQuantity cfood LEFT JOIN FETCH " +
             "cfood.consumedFood food WHERE " +
             "food.kcalPer100g >= :minCalories")
     public List<ConsumedFoodQuantity> getHighCalorieFood(
@@ -87,5 +88,7 @@ public interface ConsumedFoodQuantityRepository extends JpaRepository<ConsumedFo
             @Param("minCalories") double minCalories,
             @Param("id_of_the_person") long idOfThePerson
     );
+
+
 
 }

@@ -82,4 +82,12 @@ public class PersonWeightLoss{
     public void setHeightInCentimeters(short heightInCentimeters) {
         this.heightInCentimeters = heightInCentimeters;
     }
+
+
+    @Override
+    public String toString() {
+        return "PersonWeightLoss{" +
+                 personBasicInfo.toString() +
+                "}";
+    }
 }
