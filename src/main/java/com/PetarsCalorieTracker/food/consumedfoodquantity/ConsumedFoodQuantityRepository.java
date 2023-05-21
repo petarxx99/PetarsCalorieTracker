@@ -64,10 +64,11 @@ public interface ConsumedFoodQuantityRepository extends JpaRepository<ConsumedFo
                     "     FROM consumed_food_quantity inner_cfq LEFT JOIN food ON\n" +
                     "             food.food_id = inner_cfq.fk_consumed_food_id\n" +
                     "     WHERE inner_cfq.consumed_food_quantity_id = cfq.consumed_food_quantity_id\n" +
+                    "     GROUP BY DATE(inner_cfq.time_of_consumption) \n" +
+                    "     ORDER BY inner_cfq.time_of_consumption \n" +
                     " ) AS daily_kcal_times_100 \n" +
                     " \n" +
                     " FROM consumed_food_quantity cfq \n" +
-                    " GROUP BY cfq.consumed_food_quantity_id \n" +
                     "\n" +
                     ") outer_cfq \n" +
                     "\n" +
