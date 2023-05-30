@@ -1,13 +1,10 @@
 package com.PetarsCalorieTracker.food.consumedfoodquantity;
 
-import com.PetarsCalorieTracker.food.FoodComparassment;
-import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLossComparassment;
 import com.PetarsCalorieTracker.rangesfordatabase.ComparisonForDatabase;
 import org.springframework.lang.NonNull;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConsumedFoodQuantityComparison {
 
@@ -39,22 +36,23 @@ public class ConsumedFoodQuantityComparison {
         ComparisonForDatabase[] comparisons = {idComparison, timeOfConsumptionComparison, quantityInGramsComparison};
 
         var clause = new StringBuilder();
-        boolean noClausesYet = true;
+        AtomicBoolean noClausesYet = new AtomicBoolean(true);
         for (int i=0; i<comparisons.length; i++){
             ComparisonForDatabase currentComparison = comparisons[i];
-            if (currentComparison.hasAClause()){
-                if (!noClausesYet){
-                    clause.append(" ");
-                    clause.append(and);
-                }
-                clause.append(currentComparison.clause(
-                        tableClassName,
-                        tableColumnResolverItIsProbablyADot,
-                        lessThan,
-                        biggerThan,
-                        and).get());
-                noClausesYet = false;
-            }
+            Optional<String> currentClauseOptional = currentComparison.clause(
+                    tableClassName,
+                    tableColumnResolverItIsProbablyADot,
+                    lessThan,
+                    biggerThan,
+                    and);
+            currentClauseOptional.ifPresent(currentClause -> {
+                    if (!noClausesYet.get()){
+                        clause.append(" ");
+                        clause.append(and);
+                    }
+                    clause.append(currentClause);
+                    noClausesYet.set(false);
+            });
         }
 
         return clause.toString();

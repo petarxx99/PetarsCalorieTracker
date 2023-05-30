@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class PersonBasicInfoService {
 
-    private PersonBasicInfoRepository repository;
+    private final PersonBasicInfoRepository repository;
 
     @Autowired
     public PersonBasicInfoService(PersonBasicInfoRepository repository){

@@ -85,7 +85,7 @@ public class ComparisonForDatabase {
             @NonNull String comparisonSign,
             @NonNull Object value){
 
-        return classTableName + tableColumnResolverItIsProbablyADot + comparisonSign + value;
+        return classTableName + tableColumnResolverItIsProbablyADot + name + comparisonSign + value;
     }
 
     private boolean escapeCharExistsAndItIsNotInDoubles(char escapeChar){
