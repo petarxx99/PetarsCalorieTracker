@@ -6,15 +6,16 @@ import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.FormattedFo
 import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.LocalDateFormattedForDatabase;
 import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.LocalDateTimeFormattedForDatabase;
 import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.ObjectFormattedForDatabase;
-import org.springframework.cglib.core.Local;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class ComparingClassesForDatabase<T> {
+public class ComparingObjectsToMakeJPQLClauses<T> {
 
     @NonNull
     private final FieldComparisonForDatabase fieldComparisonForDatabase;
@@ -31,11 +32,17 @@ public class ComparingClassesForDatabase<T> {
     private Optional<String> clause = Optional.empty();
     private boolean itWasCheckedAndThereIsNoClause = false;
 
-    public ComparingClassesForDatabase(@NonNull FieldComparisonForDatabase fieldComparisonForDatabase, @NonNull T lowest, @NonNull T biggest, @NonNull T equal) {
+    private List<Field> fields = null;
+
+    public ComparingObjectsToMakeJPQLClauses(@NonNull FieldComparisonForDatabase fieldComparisonForDatabase, @NonNull T lowest, @NonNull T biggest, @NonNull T equal, @Nullable String ... fieldsToDisregard) {
         this.fieldComparisonForDatabase = fieldComparisonForDatabase;
         this.lowest = lowest;
         this.biggest = biggest;
         this.equal = equal;
+
+        Field[] fieldsOfTheClass = lowest.getClass().getDeclaredFields();
+        initFields(fieldsOfTheClass, fieldsToDisregard);
+        System.out.println("number of fields: " + fields.size());
     }
 
     public Optional<String> clause(){
@@ -50,6 +57,56 @@ public class ComparingClassesForDatabase<T> {
         makeTheClause();
         return clause;
     }
+
+
+    public void setNamesOfFieldsThatYouWantToCompare(@NonNull String ... fieldsToIncludeForComparison){
+        Field[] fieldsOfTheClass = lowest.getClass().getDeclaredFields();
+        var newFields = new ArrayList<Field>();
+
+        for(String toInclude : fieldsToIncludeForComparison){
+            for(Field field : fieldsOfTheClass){
+                if (trimmedToLowerCaseStringsMatch(toInclude, field.getName())){
+                    newFields.add(field);
+                }
+            }
+        }
+
+        fields = newFields;
+        assert fields.size() == fieldsToIncludeForComparison.length;
+    }
+
+    private void initFields(Field[] fieldsOfTheClass, String[] fieldsToDiscard){
+        fields = new ArrayList<>();
+
+        if (fieldsToDiscard == null){
+            fields.addAll(Arrays.asList(fieldsOfTheClass));
+        } else {
+            addFieldsThatArentDiscarded(fieldsOfTheClass, fieldsToDiscard);
+        }
+    }
+
+    private void addFieldsThatArentDiscarded(Field[] fieldsOfTheClass, String[] fieldsToDisregard){
+        for(Field field : fieldsOfTheClass) {
+            boolean noMatchHasBeenFound = true;
+            for (String toDisregard : fieldsToDisregard) {
+                if (trimmedToLowerCaseStringsMatch(toDisregard, field.getName())) {
+                    noMatchHasBeenFound = false;
+                    break;
+                }
+            }
+            if (noMatchHasBeenFound) {
+                fields.add(field);
+            }
+        }
+
+        assert fieldsOfTheClass.length - fields.size() == fieldsToDisregard.length;
+    }
+
+    private boolean trimmedToLowerCaseStringsMatch(@NonNull String s1, @NonNull String s2){
+        return s1.toLowerCase().trim().equals(s2.toLowerCase().trim());
+    }
+
+
 
     private void makeTheClause(){
         try{
