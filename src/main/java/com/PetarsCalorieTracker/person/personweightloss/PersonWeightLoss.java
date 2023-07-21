@@ -1,6 +1,6 @@
 package com.PetarsCalorieTracker.person.personweightloss;
 
-import com.PetarsCalorieTracker.food.ConsumedFoodQuantity;
+import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
 import com.PetarsCalorieTracker.person.DailyMass;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
 import jakarta.persistence.*;

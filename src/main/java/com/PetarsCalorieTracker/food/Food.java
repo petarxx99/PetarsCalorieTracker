@@ -1,5 +1,6 @@
 package com.PetarsCalorieTracker.food;
 
+import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
 import com.PetarsCalorieTracker.price.Price;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;

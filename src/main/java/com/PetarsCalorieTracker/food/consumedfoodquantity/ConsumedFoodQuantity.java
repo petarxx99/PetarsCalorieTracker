@@ -1,5 +1,7 @@
-package com.PetarsCalorieTracker.food;
+package com.PetarsCalorieTracker.food.consumedfoodquantity;
 
+import com.PetarsCalorieTracker.food.Food;
+import com.PetarsCalorieTracker.food.FoodQuantity;
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
