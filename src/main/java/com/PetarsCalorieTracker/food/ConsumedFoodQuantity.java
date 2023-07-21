@@ -1,13 +1,12 @@
 package com.PetarsCalorieTracker.food;
 
-import com.PetarsCalorieTracker.person.PersonWeightLoss;
+import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "consumed_food_quantity")

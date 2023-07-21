@@ -1,5 +1,6 @@
-package com.PetarsCalorieTracker.person;
+package com.PetarsCalorieTracker.person.personbasicinfo;
 
+import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;

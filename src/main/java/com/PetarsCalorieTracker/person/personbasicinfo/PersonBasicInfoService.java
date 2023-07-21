@@ -1,6 +1,5 @@
 package com.PetarsCalorieTracker.person.personbasicinfo;
 
-import com.PetarsCalorieTracker.person.PersonBasicInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -24,5 +23,6 @@ public class PersonBasicInfoService {
         return repository.findById(id);
     }
 
+    
 
 }
