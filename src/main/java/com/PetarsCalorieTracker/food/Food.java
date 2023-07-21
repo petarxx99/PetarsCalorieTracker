@@ -2,6 +2,8 @@ package com.PetarsCalorieTracker.food;
 
 import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
 import com.PetarsCalorieTracker.price.Price;
+import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.FieldAndColumnName;
+import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.ObjectFormattedForDatabase;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
