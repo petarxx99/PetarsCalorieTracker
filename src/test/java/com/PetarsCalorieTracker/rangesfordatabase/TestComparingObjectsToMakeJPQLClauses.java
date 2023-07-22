@@ -70,7 +70,7 @@ public class TestComparingObjectsToMakeJPQLClauses {
 
     @Test
     public void testFoodQuantityWasEatenAfter2021_3_21_11_34_56_before_2021_4_20_10_51_12(){
-        var foodQuantity = new FoodQuantity(new BigDecimal(50), null);
+        var foodQuantity = new FoodQuantity(new BigDecimal(50), new Food());
         var lowestConsumedFoodQuantity = new ConsumedFoodQuantity(LocalDateTime.of(2021,3,21,11,34,56), foodQuantity, null);
         var biggestConsumedFoodQuantity = new ConsumedFoodQuantity(LocalDateTime.of(2021, 4,20,10,51,12), foodQuantity, null);
         var equalConsumedFoodQuantity = new ConsumedFoodQuantity(null, foodQuantity, new PersonWeightLoss());
