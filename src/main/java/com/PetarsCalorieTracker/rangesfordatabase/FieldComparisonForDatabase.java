@@ -16,6 +16,6 @@ public interface FieldComparisonForDatabase {
             @NonNull String classTableName,
             @NonNull String biggerThanSign,
             @NonNull String lessThanSign,
-            @NonNull String and) throws NoNameForDatabaseClauseException;
+            @NonNull String andOr) throws NoNameForDatabaseClauseException;
 
 }

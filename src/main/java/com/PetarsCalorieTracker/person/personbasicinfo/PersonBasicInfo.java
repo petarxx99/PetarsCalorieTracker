@@ -16,20 +16,27 @@ public class PersonBasicInfo {
     @Column(name = "person_id")
     private Long id;
 
-    @NonNull
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @NonNull
+
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "country_of_origin")
     private String countryOfOrigin;
 
-    @NonNull
+
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+
+    @Column(name = "password", nullable = false)
+    private byte[] password;
 
 
     @OneToOne(mappedBy = "personBasicInfo")
@@ -39,19 +46,23 @@ public class PersonBasicInfo {
 
     public PersonBasicInfo(){}
 
-    public PersonBasicInfo(@NonNull String firstName, @NonNull String lastName, String countryOfOrigin, @NonNull LocalDate dateOfBirth) {
+    public PersonBasicInfo(String firstName, String lastName, String countryOfOrigin, LocalDate dateOfBirth,  String email,  byte[] password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.countryOfOrigin = countryOfOrigin;
         this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.password = password;
     }
 
-    public PersonBasicInfo(Long id, @NonNull String firstName, @NonNull String lastName, String countryOfOrigin, @NonNull LocalDate dateOfBirth) {
+    public PersonBasicInfo(Long id,  String firstName,  String lastName, String countryOfOrigin,  LocalDate dateOfBirth,  String email,  byte[] password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.countryOfOrigin = countryOfOrigin;
         this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -62,21 +73,21 @@ public class PersonBasicInfo {
         this.id = id;
     }
 
-    @NonNull
+    
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(@NonNull String firstName) {
+    public void setFirstName( String firstName) {
         this.firstName = firstName;
     }
 
-    @NonNull
+    
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(@NonNull String lastName) {
+    public void setLastName( String lastName) {
         this.lastName = lastName;
     }
 
@@ -88,12 +99,12 @@ public class PersonBasicInfo {
         this.countryOfOrigin = countryOfOrigin;
     }
 
-    @NonNull
+    
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(@NonNull LocalDate dateOfBirth) {
+    public void setDateOfBirth( LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -105,6 +116,22 @@ public class PersonBasicInfo {
         this.personWeightLossInfo = personWeightLossInfo;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public byte[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(byte[] password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "PersonBasicInfo{" +
@@ -112,7 +139,8 @@ public class PersonBasicInfo {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", countryOfOrigin='" + countryOfOrigin + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

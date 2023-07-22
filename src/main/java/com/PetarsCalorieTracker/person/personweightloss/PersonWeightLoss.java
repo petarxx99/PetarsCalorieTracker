@@ -19,7 +19,7 @@ public class PersonWeightLoss{
 
 
     @Column(name = "height_in_centimeters")
-    private short heightInCentimeters;
+    private Short heightInCentimeters;
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
@@ -39,7 +39,7 @@ public class PersonWeightLoss{
 
     public PersonWeightLoss(){}
 
-    public PersonWeightLoss(@NonNull PersonBasicInfo personBasicInfo, short heightInCentimeters)
+    public PersonWeightLoss(PersonBasicInfo personBasicInfo, Short heightInCentimeters)
     {
         this.personBasicInfo = personBasicInfo;
         this.heightInCentimeters = heightInCentimeters;
@@ -77,11 +77,11 @@ public class PersonWeightLoss{
         this.consumedFoodQuantities = consumedFoodQuantities;
     }
 
-    public short getHeightInCentimeters() {
+    public Short getHeightInCentimeters() {
         return heightInCentimeters;
     }
 
-    public void setHeightInCentimeters(short heightInCentimeters) {
+    public void setHeightInCentimeters(Short heightInCentimeters) {
         this.heightInCentimeters = heightInCentimeters;
     }
 

@@ -34,15 +34,22 @@ public class ComparingObjectsToMakeJPQLClauses<T> {
 
     private List<Field> fields = null;
 
-    public ComparingObjectsToMakeJPQLClauses(@NonNull FieldComparisonForDatabase fieldComparisonForDatabase, @NonNull T lowest, @NonNull T biggest, @NonNull T equal, @Nullable String ... fieldsToDisregard) {
+    @NonNull
+    private final String classAliasForQuery;
+
+    @NonNull
+    private final String andOr;
+
+    public ComparingObjectsToMakeJPQLClauses(@NonNull String classAliasForQuery, @NonNull String andOr, @NonNull FieldComparisonForDatabase fieldComparisonForDatabase, @NonNull T lowest, @NonNull T biggest, @NonNull T equal, @Nullable String ... fieldsToDisregard) {
         this.fieldComparisonForDatabase = fieldComparisonForDatabase;
         this.lowest = lowest;
         this.biggest = biggest;
         this.equal = equal;
+        this.classAliasForQuery = classAliasForQuery;
+        this.andOr = andOr;
 
         Field[] fieldsOfTheClass = lowest.getClass().getDeclaredFields();
         initFields(fieldsOfTheClass, fieldsToDisregard);
-        System.out.println("number of fields: " + fields.size());
     }
 
     public Optional<String> clause(){
@@ -112,19 +119,20 @@ public class ComparingObjectsToMakeJPQLClauses<T> {
         try{
             var clauseToBuild = new StringBuilder();
             boolean noClausesHaveBeenAddedYet = true;
-            Field[] fields = lowest.getClass().getDeclaredFields();
 
             for (Field field : fields) {
                 field.setAccessible(true);
-                var lowestValue = Optional.of(field.get(lowest));
-                var biggestValue = Optional.of(field.get(biggest));
-                var equalValue = Optional.of(field.get(equal));
+                var lowestValue = Optional.ofNullable(field.get(lowest));
+                var biggestValue = Optional.ofNullable(field.get(biggest));
+                var equalValue = Optional.ofNullable(field.get(equal));
 
-                Optional<String> clauseForThisField = fieldComparisonForDatabase.clause(mapAnObjectToFormattedForDatabase(lowestValue), mapAnObjectToFormattedForDatabase(biggestValue), mapAnObjectToFormattedForDatabase(equalValue), Optional.of(field.getName()), lowest.getClass().getSimpleName(), ">", "<", "AND");
+                Optional<String> clauseForThisField = fieldComparisonForDatabase.clause(mapAnObjectToFormattedForDatabase(lowestValue), mapAnObjectToFormattedForDatabase(biggestValue), mapAnObjectToFormattedForDatabase(equalValue), Optional.of(field.getName()), classAliasForQuery, ">", "<", andOr);
 
                 if (clauseForThisField.isPresent()){
                     if (!noClausesHaveBeenAddedYet){
-                        clauseToBuild.append(" AND ");
+                        clauseToBuild.append(" ");
+                        clauseToBuild.append(andOr);
+                        clauseToBuild.append(" ");
                     }
 
                     clauseToBuild.append(clauseForThisField.get());

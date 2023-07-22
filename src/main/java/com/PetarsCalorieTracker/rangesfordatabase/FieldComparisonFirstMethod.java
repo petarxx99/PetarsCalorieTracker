@@ -28,7 +28,7 @@ public class FieldComparisonFirstMethod implements FieldComparisonForDatabase{
             @NonNull String classTableName,
             @NonNull String biggerThanSign,
             @NonNull String lessThanSign,
-            @NonNull String and) throws NoNameForDatabaseClauseException {
+            @NonNull String andOr) throws NoNameForDatabaseClauseException {
         if (name.isEmpty()
                         && (lowest.isPresent() || biggest.isPresent() || equal.isPresent())
         ){throw new NoNameForDatabaseClauseException("no name for a database clause.");}
@@ -50,7 +50,7 @@ public class FieldComparisonFirstMethod implements FieldComparisonForDatabase{
 
         if (lowest.isPresent()){
             result.append(" ");
-            result.append(and);
+            result.append(andOr);
             result.append(" ");
 
             result.append(formSingleClause(classTableName, name.get(), biggerThanSign, lowest.get()));

@@ -19,11 +19,11 @@ public class ConsumedFoodQuantity {
     @Column(name = "consumed_food_quantity_id")
     private Long id;
 
-    @NonNull
-    @Column(name = "time_of_consumption", nullable = false)
-    private LocalDateTime localDateTime;
 
-    @NonNull
+    @Column(name = "time_of_consumption", nullable = false)
+    private LocalDateTime timeOfConsumption;
+
+
     @Column(name = "consumed_food_in_grams", nullable = false)
     private BigDecimal consumedFoodInGrams;
 
@@ -42,21 +42,21 @@ public class ConsumedFoodQuantity {
 
     public ConsumedFoodQuantity(){}
 
-    public ConsumedFoodQuantity(@NonNull LocalDateTime localDateTime,
-                                @NonNull FoodQuantity food,
-                                @NonNull PersonWeightLoss personWeightLoss) {
-        this.localDateTime = localDateTime;
+    public ConsumedFoodQuantity( LocalDateTime timeOfConsumption,
+                                 FoodQuantity food,
+                                 PersonWeightLoss personWeightLoss) {
+        this.timeOfConsumption = timeOfConsumption;
         this.consumedFoodInGrams = food.getQuantityInGrams();
         this.consumedFood = food.getFood();
         this.personWeightLoss = personWeightLoss;
     }
 
     public ConsumedFoodQuantity(long id,
-                                @NonNull LocalDateTime localDateTime,
-                                @NonNull FoodQuantity food,
-                                @NonNull PersonWeightLoss personWeightLoss) {
+                                 LocalDateTime timeOfConsumption,
+                                 FoodQuantity food,
+                                 PersonWeightLoss personWeightLoss) {
         this.id = id;
-        this.localDateTime = localDateTime;
+        this.timeOfConsumption = timeOfConsumption;
         this.consumedFoodInGrams = food.getQuantityInGrams();
         this.consumedFood = food.getFood();
         this.personWeightLoss = personWeightLoss;
@@ -72,21 +72,20 @@ public class ConsumedFoodQuantity {
         this.id = id;
     }
 
-    @NonNull
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+
+    public LocalDateTime getTimeOfConsumption() {
+        return timeOfConsumption;
     }
 
-    public void setLocalDateTime(@NonNull LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setTimeOfConsumption(LocalDateTime timeOfConsumption) {
+        this.timeOfConsumption = timeOfConsumption;
     }
 
-    @NonNull
     public BigDecimal getConsumedFoodInGrams() {
         return consumedFoodInGrams;
     }
 
-    public void setConsumedFoodInGrams(@NonNull BigDecimal consumedFoodInGrams) {
+    public void setConsumedFoodInGrams( BigDecimal consumedFoodInGrams) {
         this.consumedFoodInGrams = consumedFoodInGrams;
     }
 
@@ -110,7 +109,7 @@ public class ConsumedFoodQuantity {
     public String toString() {
         return "ConsumedFoodQuantity{" +
                 "id=" + id +
-                ", localDateTime=" + localDateTime +
+                ", timeOfConsumption=" + timeOfConsumption +
                 ", consumedFoodInGrams=" + consumedFoodInGrams +
                 ", consumedFood=" + consumedFood +
                 '}';

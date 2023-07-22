@@ -129,4 +129,50 @@ public class TestFieldComparisonFirstMethod {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testObjectReturnsEmptyOptionalWhenNoBoundsPresented(){
+        try {
+            var comparison = new FieldComparisonFirstMethod();
+            Optional<String> clause = comparison.clause(
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.of("something"),
+                    "some_table",
+                    ">",
+                    "<",
+                    "AND"
+            );
+
+
+            assertTrue(clause.isEmpty());
+        }  catch(NoNameForDatabaseClauseException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void testObjectReturnsEmptyOptionalWhenNoBoundsNorColumnsPresented(){
+        try {
+            var comparison = new FieldComparisonFirstMethod();
+            Optional<String> clause = comparison.clause(
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    "some_table",
+                    ">",
+                    "<",
+                    "AND"
+            );
+
+
+            assertTrue(clause.isEmpty());
+        }  catch(NoNameForDatabaseClauseException e){
+            e.printStackTrace();
+        }
+    }
+
 }

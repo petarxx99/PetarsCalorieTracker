@@ -1,5 +1,6 @@
 package com.PetarsCalorieTracker.food;
 
+import com.PetarsCalorieTracker.constants.Constants;
 import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
 import com.PetarsCalorieTracker.price.Price;
 import com.PetarsCalorieTracker.rangesfordatabase.formatsfordatabase.FieldAndColumnName;
@@ -21,15 +22,13 @@ public class Food {
     @Column(name = "food_id")
     private Long foodId;
 
-    @NonNull
+
     @Column(name="name", nullable = false)
     private String foodName;
 
-    @NonNull
     @Column(name = "kcal_per_100g", nullable = false)
     private BigDecimal kcalPer100g;
 
-    @NonNull
     @Column(name = "proteins_per_100g", nullable = false)
     private BigDecimal proteinsPer100g;
 
@@ -49,7 +48,7 @@ public class Food {
     private BigDecimal fiberPer100g;
 
     @Column(name = "one_portion_size_in_grams", nullable = true)
-    private short onePortionSizeInGrams;
+    private Short onePortionSizeInGrams;
 
     @Column(name = "price_per_100g", nullable = true)
     private BigDecimal pricePer100g;
@@ -58,11 +57,11 @@ public class Food {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Set<ConsumedFoodQuantity> consumedFoodQuantities;
 
-    private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
+
 
     public Food(){}
 
-    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
+    public Food( String foodName,  BigDecimal kcalPer100g,  BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
         this.proteinsPer100g = proteinsPer100g;
@@ -75,7 +74,7 @@ public class Food {
         price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
-    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
+    public Food(Long foodId,  String foodName,  BigDecimal kcalPer100g,  BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, BigDecimal saturatedFatsPer100g, BigDecimal badTransFatsPer100g, BigDecimal fiberPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
@@ -89,7 +88,7 @@ public class Food {
         price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
-    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
+    public Food(Long foodId,  String foodName,  BigDecimal kcalPer100g,  BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
@@ -100,7 +99,7 @@ public class Food {
         price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
-    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
+    public Food( String foodName,  BigDecimal kcalPer100g,  BigDecimal proteinsPer100g, BigDecimal carbsPer100g, BigDecimal fatsPer100g, short onePortionSizeInGrams, Optional<Price> price) {
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
         this.proteinsPer100g = proteinsPer100g;
@@ -110,25 +109,25 @@ public class Food {
         price.ifPresent(pricePer100grams -> this.pricePer100g = pricePer100grams.getPricePer100grams());
     }
 
-    public Food(Long foodId, @NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g) {
+    public Food(Long foodId,  String foodName,  BigDecimal kcalPer100g,  BigDecimal proteinsPer100g) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
         this.proteinsPer100g = proteinsPer100g;
     }
 
-    public Food(@NonNull String foodName, @NonNull BigDecimal kcalPer100g, @NonNull BigDecimal proteinsPer100g) {
+    public Food( String foodName,  BigDecimal kcalPer100g,  BigDecimal proteinsPer100g) {
         this.foodName = foodName;
         this.kcalPer100g = kcalPer100g;
         this.proteinsPer100g = proteinsPer100g;
     }
 
-    @NonNull
+    
     public String getFoodName() {
         return foodName;
     }
 
-    public void setFoodName(@NonNull String foodName) {
+    public void setFoodName( String foodName) {
         this.foodName = foodName;
     }
 
@@ -140,21 +139,21 @@ public class Food {
         this.foodId = foodId;
     }
 
-    @NonNull
+    
     public BigDecimal getKcalPer100g() {
         return kcalPer100g;
     }
 
-    public void setKcalPer100g(@NonNull BigDecimal kcalPer100g) {
+    public void setKcalPer100g( BigDecimal kcalPer100g) {
         this.kcalPer100g = kcalPer100g;
     }
 
-    @NonNull
+    
     public BigDecimal getProteinsPer100g() {
         return proteinsPer100g;
     }
 
-    public void setProteinsPer100g(@NonNull BigDecimal proteinsPer100g) {
+    public void setProteinsPer100g( BigDecimal proteinsPer100g) {
         this.proteinsPer100g = proteinsPer100g;
     }
 
@@ -199,11 +198,11 @@ public class Food {
         this.fiberPer100g = fiberPer100g;
     }
 
-    public short getOnePortionSizeInGrams() {
+    public Short getOnePortionSizeInGrams() {
         return onePortionSizeInGrams;
     }
 
-    public void setOnePortionSizeInGrams(short onePortionSizeInGrams) {
+    public void setOnePortionSizeInGrams(Short onePortionSizeInGrams) {
         this.onePortionSizeInGrams = onePortionSizeInGrams;
     }
 
@@ -243,7 +242,7 @@ public class Food {
 
 
 
-    public Food copyAllButNameAndId(@NonNull String newName){
+    public Food copyAllButNameAndId( String newName){
         try {
             return new Food(
                     newName,
@@ -255,7 +254,7 @@ public class Food {
                     getBadTransFatsPer100g(),
                     getFiberPer100g(),
                     getOnePortionSizeInGrams(),
-                    Optional.of(new Price(getPricePer100g(), ONE_HUNDRED)));
+                    Optional.of(new Price(getPricePer100g(), Constants.ONE_HUNDRED)));
         } catch(Exception e){
             e.printStackTrace();
             return null;

@@ -17,11 +17,11 @@ public class DailyMass {
     @Column(name = "daily_mass_id")
     private Long id;
 
-    @NonNull
-    @Column(name = "mass_in_kilograms", nullable = false)
-    private float massInKilograms;
 
-    @NonNull
+    @Column(name = "mass_in_kilograms", nullable = false)
+    private Float massInKilograms;
+
+
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
@@ -33,13 +33,13 @@ public class DailyMass {
 
     public DailyMass(){}
 
-    public DailyMass(float massInKilograms, @NonNull LocalDate date, PersonWeightLoss personWeightLoss) {
+    public DailyMass(Float massInKilograms, LocalDate date, PersonWeightLoss personWeightLoss) {
         this.massInKilograms = massInKilograms;
         this.date = date;
         this.personWeightLoss = personWeightLoss;
     }
 
-    public DailyMass(Long id, float massInKilograms, @NonNull LocalDate date, PersonWeightLoss personWeightLoss) {
+    public DailyMass(Long id, float massInKilograms, LocalDate date, PersonWeightLoss personWeightLoss) {
         this.id = id;
         this.massInKilograms = massInKilograms;
         this.date = date;
@@ -54,20 +54,20 @@ public class DailyMass {
         this.id = id;
     }
 
-    public float getMassInKilograms() {
+    public Float getMassInKilograms() {
         return massInKilograms;
     }
 
-    public void setMassInKilograms(float massInKilograms) {
+    public void setMassInKilograms(Float massInKilograms) {
         this.massInKilograms = massInKilograms;
     }
 
-    @NonNull
+
     public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(@NonNull LocalDate date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
