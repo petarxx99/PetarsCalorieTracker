@@ -3,6 +3,7 @@ package com.PetarsCalorieTracker.rangesfordatabase;
 import com.PetarsCalorieTracker.food.Food;
 import com.PetarsCalorieTracker.food.FoodQuantity;
 import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
+import com.PetarsCalorieTracker.person.DailyMass;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestComparingObjectsToMakeJPQLClauses {
@@ -105,6 +107,34 @@ public class TestComparingObjectsToMakeJPQLClauses {
         assertTrue(expected.equals(actual));
     }
 
+    @Test
+    public void testDailyWeightOn2019_4_20andKilogramsAbove80point180point3(){
+        var lowestDay = new DailyMass(80.1f, null, null);
+        var biggestDay = new DailyMass(80.3f, null, null);
+        var equalDay = new DailyMass(null, LocalDate.of(2019,4,20), null);
+
+        var c = new ComparingObjectsToMakeJPQLClauses<DailyMass>("dm", "AND", new FieldComparisonFirstMethod(),
+                lowestDay, biggestDay, equalDay);
+
+        String expected = "dm.massInKilograms<80.3 AND dm.massInKilograms>80.1 AND "
+                + "dm.date='2019-04-20'";
+        String actual = c.clause().orElse("NOT WORKING");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testMakeAClausePersonWeightLossHeightInCmEquals187(){
+        var lowestPerson = new PersonWeightLoss(null, null);
+        var biggestPerson = new PersonWeightLoss(null, null);
+        var equalPerson = new PersonWeightLoss(null, (short)187);
+
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>("p", "AND", new FieldComparisonFirstMethod(),
+                lowestPerson, biggestPerson, equalPerson);
+
+        String expected = "p.heightInCentimeters=187";
+        String actual = c.clause().orElse("NOT WORKING");
+        assertEquals(expected, actual);
+    }
 
 
 }
