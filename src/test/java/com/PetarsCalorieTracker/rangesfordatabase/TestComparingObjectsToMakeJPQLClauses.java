@@ -20,7 +20,7 @@ public class TestComparingObjectsToMakeJPQLClauses {
 
     @Test
     public void testThatInitializationWentFine(){
-        var person = new PersonBasicInfo("Jovan", "Petrovic", "Serbia",
+        var person = new PersonBasicInfo("Jovan", "Petrovic", "jovan", "Serbia",
                 LocalDate.of(2020, 2, 20), "jovan@gmail.com", new byte[]{2,3});
         var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>("person", "AND", new FieldComparisonFirstMethod(),
                 person, person, person,
@@ -52,11 +52,11 @@ public class TestComparingObjectsToMakeJPQLClauses {
 
     @Test
     public void testThatHumansLastNameIsJamesBornAfter1991_10_22_bornBefore2002_8_20(){
-        var personLowest = new PersonBasicInfo(null, null, null,
+        var personLowest = new PersonBasicInfo(null, null, null, null,
                 LocalDate.of(1991, 10, 22), null, null);
-        var personBiggest = new PersonBasicInfo(null, null, null,
+        var personBiggest = new PersonBasicInfo(null, null, null,null,
                 LocalDate.of(2002, 8, 20), null, null);
-        var personEqual = new PersonBasicInfo(null, "James", null,
+        var personEqual = new PersonBasicInfo(null, "James", null,null,
                 null, null, null);
 
         var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>("person", "AND", new FieldComparisonFirstMethod(),

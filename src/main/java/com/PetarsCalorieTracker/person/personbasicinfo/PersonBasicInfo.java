@@ -24,6 +24,9 @@ public class PersonBasicInfo {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name="username", nullable = false)
+    private String username;
+
     @Column(name = "country_of_origin")
     private String countryOfOrigin;
 
@@ -46,7 +49,7 @@ public class PersonBasicInfo {
 
     public PersonBasicInfo(){}
 
-    public PersonBasicInfo(String firstName, String lastName, String countryOfOrigin, LocalDate dateOfBirth,  String email,  byte[] password) {
+    public PersonBasicInfo(String firstName, String lastName, String username, String countryOfOrigin, LocalDate dateOfBirth,  String email,  byte[] password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.countryOfOrigin = countryOfOrigin;
@@ -55,7 +58,7 @@ public class PersonBasicInfo {
         this.password = password;
     }
 
-    public PersonBasicInfo(Long id,  String firstName,  String lastName, String countryOfOrigin,  LocalDate dateOfBirth,  String email,  byte[] password) {
+    public PersonBasicInfo(Long id,  String firstName,  String lastName, String username, String countryOfOrigin,  LocalDate dateOfBirth,  String email,  byte[] password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,6 +66,7 @@ public class PersonBasicInfo {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
+        this.username = username;
     }
 
     public Long getId() {
@@ -87,7 +91,15 @@ public class PersonBasicInfo {
         return lastName;
     }
 
-    public void setLastName( String lastName) {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -132,12 +144,14 @@ public class PersonBasicInfo {
         this.password = password;
     }
 
+
     @Override
     public String toString() {
         return "PersonBasicInfo{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
                 ", countryOfOrigin='" + countryOfOrigin + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", email='" + email + '\'' +
