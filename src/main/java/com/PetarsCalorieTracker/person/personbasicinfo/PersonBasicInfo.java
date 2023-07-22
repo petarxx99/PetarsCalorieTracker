@@ -8,7 +8,12 @@ import org.springframework.lang.NonNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "people_basic_info")
+@Table(name = "people_basic_info",
+indexes = {
+        @Index(name="email_idx", columnList = "email", unique = true),
+        @Index(name="username_idx",columnList = "username", unique = true),
+        @Index(name="last_name_first_name_idx", columnList = "last_name,first_name")
+})
 public class PersonBasicInfo {
 
     @Id
