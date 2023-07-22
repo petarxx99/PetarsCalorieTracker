@@ -136,5 +136,28 @@ public class TestComparingObjectsToMakeJPQLClauses {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testThatWhenAllParametersAreNullEmptyOptionalIsReturned(){
+        var person = new PersonWeightLoss(null, null);
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>("p", "AND", new FieldComparisonFirstMethod(),
+                person, person, person);
+
+        Optional<String> actualOptional = c.clause();
+        assertTrue(actualOptional.isEmpty());
+    }
+
+    @Test
+    public void testThatWhenSetFieldsToCompareAreNothingThenTheClauseIsAnEmptyOptional(){
+        var lowestPerson = new PersonWeightLoss(null, null);
+        var biggestPerson = new PersonWeightLoss(null, null);
+        var equalPerson = new PersonWeightLoss(null, (short)187);
+
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>("p", "AND", new FieldComparisonFirstMethod(),
+                lowestPerson, biggestPerson, equalPerson);
+        c.setNamesOfFieldsThatYouWantToCompare(); // No fields on which clause is created.
+
+        Optional<String> actualOptional = c.clause();
+        assertTrue(actualOptional.isEmpty());
+    }
 
 }
