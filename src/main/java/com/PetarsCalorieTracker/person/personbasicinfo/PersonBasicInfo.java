@@ -1,5 +1,6 @@
 package com.PetarsCalorieTracker.person.personbasicinfo;
 
+import com.PetarsCalorieTracker.person.authentication.AuthenticationToken;
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
@@ -53,6 +54,11 @@ public class PersonBasicInfo {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private PersonWeightLoss personWeightLossInfo;
+
+    @OneToOne(mappedBy = "personBasicInfo", fetch=FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private AuthenticationToken authenticationToken;
 
     public PersonBasicInfo(){}
 
@@ -151,6 +157,13 @@ public class PersonBasicInfo {
         this.password = password;
     }
 
+    public AuthenticationToken getAuthenticationToken() {
+        return authenticationToken;
+    }
+
+    public void setAuthenticationToken(AuthenticationToken authenticationToken) {
+        this.authenticationToken = authenticationToken;
+    }
 
     @Override
     public String toString() {

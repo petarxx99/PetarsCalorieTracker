@@ -17,14 +17,14 @@ public class PersonWeightLoss{
     @Column(name = "basic_persons_info_id")
     private Long id;
 
-
-    @Column(name = "height_in_centimeters")
-    private Short heightInCentimeters;
-
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
     @JoinColumn(name = "basic_persons_info_id", referencedColumnName = "person_id")
     private PersonBasicInfo personBasicInfo;
+
+    @Column(name = "height_in_centimeters")
+    private Short heightInCentimeters;
+
 
 
     @OneToMany(mappedBy = "personWeightLoss", fetch = FetchType.EAGER)
