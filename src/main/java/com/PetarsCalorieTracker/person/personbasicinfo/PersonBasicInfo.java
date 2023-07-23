@@ -29,6 +29,7 @@ public class PersonBasicInfo {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+
     @Column(name="username", nullable = false, unique = true)
     private String username;
 
@@ -44,7 +45,7 @@ public class PersonBasicInfo {
     private String email;
 
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, columnDefinition = "varbinary(512) NOT NULL")
     private byte[] password;
 
 
