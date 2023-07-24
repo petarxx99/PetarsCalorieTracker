@@ -1,7 +1,9 @@
 package com.PetarsCalorieTracker.person.personweightloss;
 
 import com.PetarsCalorieTracker.constants.Constants;
+import com.PetarsCalorieTracker.querybuilders.QueryBuilder;
 import com.PetarsCalorieTracker.rangesfordatabase.QueryClauseMaker;
+import com.PetarsCalorieTracker.rangesfordatabase.clausecombiners.ClausesCombiner;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,19 @@ public class PersonWeightLossService {
     public static final String CONSUMED_FOOD_QUANTITY_ALIAS = "cfq";
     public static final String DAILY_MASSES_ALIAS = "dm";
 
+    private static final String SELECT = "SELECT personWL ";
+    private static final String FROM_WITHOUT_DAILY_MASS =
+                    " FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+                    "personWL.personBasicInfo person LEFT JOIN FETCH " +
+                    "personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+                    "cfq.consumedFood food ";
 
+    private static final String FROM_WITH_DAILY_MASS =
+            "FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+                    "  personWL.personBasicInfo person LEFT JOIN FETCH " +
+                    "  personWL.dailyMassesInKilograms dm LEFT JOIN FETCH " +
+                    "  personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+                    "  cfq.consumedFood food ";
     private static final String PERSON_WITHOUT_DAILY_MASS =
             "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
             "personWL.personBasicInfo person LEFT JOIN FETCH " +
@@ -42,10 +56,15 @@ public class PersonWeightLossService {
     @PersistenceContext
     private EntityManager entityManager;
     private PersonWeightLossRepository repository;
+    private ClausesCombiner clausesCombiner;
+
+    private QueryBuilder queryBuilder;
 
     @Autowired
-    public PersonWeightLossService(PersonWeightLossRepository repository){
+    public PersonWeightLossService(PersonWeightLossRepository repository, ClausesCombiner clausesCombiner, QueryBuilder queryBuilder) {
         this.repository = repository;
+        this.clausesCombiner = clausesCombiner;
+        this.queryBuilder = queryBuilder;
     }
 
     public Optional<PersonWeightLoss> findById(long id){
@@ -63,9 +82,10 @@ public class PersonWeightLossService {
         StringBuilder clause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity);
         Optional<String> dailyMassClause = dailyMass.isEmpty()? Optional.empty() :
                 dailyMass.get().clause(DAILY_MASSES_ALIAS, "AND");
-        addClauseAndReturnTrueIfClauseIsAdded(clause, dailyMassClause);
+        clausesCombiner.addClauseAndReturnTrueIfClauseIsAdded(clause, dailyMassClause);
 
-        String query = PERSON_WITH_DAILY_MASS + " WHERE " + clause.toString();
+        String query = queryBuilder.addSelect(SELECT).addFrom(FROM_WITH_DAILY_MASS)
+                .addClause(clause.toString(), "WHERE");
         return entityManager.createQuery(query, PersonWeightLoss.class).getResultList();
     }
 
@@ -75,8 +95,8 @@ public class PersonWeightLossService {
             @NonNull Optional<QueryClauseMaker> consumedFoodQuantity){
 
         String whereClause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity).toString();
-        String query = PERSON_WITHOUT_DAILY_MASS + " WHERE " + whereClause;
-
+        String query = queryBuilder.addSelect(SELECT).addFrom(PERSON_WITHOUT_DAILY_MASS)
+                .addClause(whereClause, "WHERE");
         return entityManager.createQuery(query, PersonWeightLoss.class).getResultList();
     }
 
@@ -148,37 +168,9 @@ public class PersonWeightLossService {
         Optional<String> consumedFoodQuantityClause = consumedFoodQuantity.isEmpty()? Optional.empty() :
                 consumedFoodQuantity.get().clause(CONSUMED_FOOD_QUANTITY_ALIAS, "AND");
 
-        return addClausesTogether(personClause, foodClause, consumedFoodQuantityClause);
+        return clausesCombiner.addClausesTogether(personClause, foodClause, consumedFoodQuantityClause);
     }
 
-    private boolean addClauseAndReturnTrueIfClauseIsAdded(StringBuilder allClauses,
-                                                          Optional<String> newClause){
-        if (newClause.isPresent()){
-            if (allClauses.length() > 0){
-                allClauses.append(" AND ");
-            }
-            allClauses.append(newClause.get());
-            return true;
-        }
-        return false;
-    }
-
-
-    @SafeVarargs
-    private StringBuilder addClausesTogether(Optional<String> ... clauses){
-        StringBuilder result = new StringBuilder();
-        if (clauses.length == 0){
-            return result;
-        }
-
-        clauses[0].ifPresent(result::append);
-
-        for(int i=1; i<clauses.length; i++){
-            addClauseAndReturnTrueIfClauseIsAdded(result, clauses[i]);
-        }
-
-        return result;
-    }
 
 
 }

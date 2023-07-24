@@ -1,10 +1,14 @@
 package com.PetarsCalorieTracker.rangesfordatabase.clausecombiners;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
+@Service
 public class ClauseCombinerFirstImpl implements ClausesCombiner{
 
 
+    @Override
     @SafeVarargs
     public final StringBuilder addClausesTogether(Optional<String>... clauses){
         StringBuilder result = new StringBuilder();
@@ -21,7 +25,8 @@ public class ClauseCombinerFirstImpl implements ClausesCombiner{
         return result;
     }
 
-    private boolean addClauseAndReturnTrueIfClauseIsAdded(StringBuilder allClauses,
+    @Override
+    public boolean addClauseAndReturnTrueIfClauseIsAdded(StringBuilder allClauses,
                                                           Optional<String> newClause){
         if (newClause.isPresent()){
             if (allClauses.length() > 0){
