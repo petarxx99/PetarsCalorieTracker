@@ -1,10 +1,10 @@
 package com.PetarsCalorieTracker.querybuilders;
 
-public class QueryBuildersConstructors implements QueryBuilder, QueryFromBuilder, QueryBuilderClausePhase{
+public class QueryBuilderConstructor implements QueryBuilder, QueryFromBuilder, QueryBuilderClausePhase{
 
-    StringBuilder query = null;
+    private StringBuilder query = null;
 
-    public QueryBuildersConstructors(){}
+    private QueryBuilderConstructor(){}
 
     @Override
     public QueryFromBuilder addSelect(String select) {
@@ -15,7 +15,6 @@ public class QueryBuildersConstructors implements QueryBuilder, QueryFromBuilder
 
     @Override
     public QueryBuilderClausePhase addFrom(String from){
-        query.append(" ");
         query.append(from);
         query.append(" ");
         return this;
@@ -27,7 +26,6 @@ public class QueryBuildersConstructors implements QueryBuilder, QueryFromBuilder
 
         if (clause.trim().equals("")) return query.toString();
 
-        query.append(" ");
         query.append(firstWordOfTheClauseProbablyWhere);
         query.append(" ");
         query.append(clause);
@@ -37,5 +35,9 @@ public class QueryBuildersConstructors implements QueryBuilder, QueryFromBuilder
     @Override
     public String buildQuery() {
         return query.toString();
+    }
+
+    public static QueryBuilder getQueryBuilder(){
+        return new QueryBuilderConstructor();
     }
 }
