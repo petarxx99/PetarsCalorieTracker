@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /* http://localhost:portNumber */
+
 @SpringBootApplication
 public class PetarsCalorieTrackerApplication {
 

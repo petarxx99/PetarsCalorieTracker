@@ -51,38 +51,30 @@ public interface ConsumedFoodQuantityRepository extends JpaRepository<ConsumedFo
 
 
     @Query(
-            value = "SELECT outer_cfq.* FROM \n" +
-                    "(\n" +
-                    " SELECT \n" +
-                    " cfq.consumed_food_quantity_id,\n" +
-                    " cfq.time_of_consumption,\n" +
-                    " cfq.consumed_food_in_grams,\n" +
-                    " cfq.fk_consumed_food_id,\n" +
-                    " cfq.fk_person_that_eats_id,\n" +
+            value = "SELECT * FROM \n" +
+                    " (SELECT \n" +
+                    " cfq.*, food.*, people.*, pwl.*, \n" +
+                    "DATE(cfq.time_of_consumption) as day_of_consumption, \n" +
                     " (SELECT SUM(inner_cfq.consumed_food_in_grams * food.kcal_per_100g)\n" +
-                    "     FROM consumed_food_quantity inner_cfq LEFT JOIN food ON\n" +
-                    "             food.food_id = inner_cfq.fk_consumed_food_id\n" +
-                    "     WHERE inner_cfq.consumed_food_quantity_id = cfq.consumed_food_quantity_id\n" +
-                    "     GROUP BY DATE(inner_cfq.time_of_consumption) \n" +
-                    "     ORDER BY inner_cfq.time_of_consumption \n" +
+                    "     FROM consumed_food_quantity inner_cfq \n" +
+                    "     WHERE inner_cfq.fk_person_that_eats_id = people.person_id AND \n" +
+                    " DATE(inner_cfq.time_of_consumption) = day_of_consumption \n" +
                     " ) AS daily_kcal_times_100 \n" +
-                    " \n" +
                     " FROM consumed_food_quantity cfq \n" +
-                    "\n" +
-                    ") outer_cfq \n" +
-                    "\n" +
                     "LEFT JOIN food ON \n" +
-                    "food.food_id = outer_cfq.fk_consumed_food_id LEFT JOIN\n" +
+                    "food.food_id = cfq.fk_consumed_food_id LEFT JOIN\n" +
                     "people_basic_info people ON \n" +
-                    "people.person_id = outer_cfq.fk_person_that_eats_id \n" +
-                    "\n" +
-                    "WHERE outer_cfq.daily_kcal_times_100 / 100.00 > :minCalories AND " +
-                    "DATE(outer_cfq.time_of_consumption) >= :start_date AND " +
-                    "DATE(outer_cfq.time_of_consumption) <= :end_date AND " +
-                    "people.person_id = :id_of_the_person",
+                    "people.person_id = cfq.fk_person_that_eats_id \n" +
+                    "LEFT JOIN people_weight_loss pwl ON pwl.basic_persons_info_id = people.person_id   \n" +
+                    "WHERE \n" +
+                    "cfq.time_of_consumption >= :start_date AND \n" +
+                    "cfq.time_of_consumption <= :end_date AND \n" +
+                    "people.person_id = :id_of_the_person \n" +
+                    ") inner_query \n" +
+                    "WHERE inner_query.daily_kcal_times_100 / 100.00 > :minCalories",
             nativeQuery = true
     )
-    public List<ConsumedFoodQuantity> getFoodWhereApersonAteOverXnumberOfKcal(
+    public List<ConsumedFoodQuantity> getFoodWhereApersonAteOverXnumberOfKcalThatDay(
             @Param("start_date") @NonNull LocalDate startDate,
             @Param("end_date") @NonNull LocalDate endDate,
             @Param("minCalories") double minCalories,

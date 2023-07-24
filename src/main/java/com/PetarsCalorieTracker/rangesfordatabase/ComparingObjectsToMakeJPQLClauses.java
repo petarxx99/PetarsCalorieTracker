@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ComparingObjectsToMakeJPQLClauses<T> {
+public class ComparingObjectsToMakeJPQLClauses<T> implements QueryClauseMaker{
 
     @NonNull
     private final FieldComparisonForDatabase fieldComparisonForDatabase;
@@ -34,35 +34,61 @@ public class ComparingObjectsToMakeJPQLClauses<T> {
 
     private List<Field> fields = null;
 
-    @NonNull
-    private final String classAliasForQuery;
 
-    @NonNull
-    private final String andOr;
 
-    public ComparingObjectsToMakeJPQLClauses(@NonNull String classAliasForQuery, @NonNull String andOr, @NonNull FieldComparisonForDatabase fieldComparisonForDatabase, @NonNull T lowest, @NonNull T biggest, @NonNull T equal, @Nullable String ... fieldsToDisregard) {
+    public ComparingObjectsToMakeJPQLClauses(@NonNull FieldComparisonForDatabase fieldComparisonForDatabase, @NonNull T lowest, @NonNull T biggest, @NonNull T equal, @Nullable String ... fieldsToDisregard) {
         this.fieldComparisonForDatabase = fieldComparisonForDatabase;
         this.lowest = lowest;
         this.biggest = biggest;
         this.equal = equal;
-        this.classAliasForQuery = classAliasForQuery;
-        this.andOr = andOr;
 
         Field[] fieldsOfTheClass = lowest.getClass().getDeclaredFields();
         initFields(fieldsOfTheClass, fieldsToDisregard);
     }
 
-    public Optional<String> clause(){
-        if (itWasCheckedAndThereIsNoClause){
+    public Optional<String> clause(@NonNull String classAliasForQuery, @NonNull String andOr){
+        String clause = constructClause(classAliasForQuery, andOr);
+
+        if (clause.trim().equals("")){
             return Optional.empty();
         }
+        return Optional.of(clause);
+    }
 
-        if (clause.isPresent()){
-            return clause;
+    private String constructClause(String classAliasForQuery, String andOr){
+        StringBuilder clauseToBuild = new StringBuilder();
+        try{
+            boolean noClausesHaveBeenAddedYet = true;
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+                var lowestValue = Optional.ofNullable(field.get(lowest));
+                var biggestValue = Optional.ofNullable(field.get(biggest));
+                var equalValue = Optional.ofNullable(field.get(equal));
+
+                Optional<String> clauseForThisField = fieldComparisonForDatabase.clause(mapAnObjectToFormattedForDatabase(lowestValue), mapAnObjectToFormattedForDatabase(biggestValue), mapAnObjectToFormattedForDatabase(equalValue), Optional.of(field.getName()), classAliasForQuery, ">", "<", andOr);
+
+                if (clauseForThisField.isPresent()){
+                    insertANDIfThisIsntTheFirstClause(clauseToBuild, noClausesHaveBeenAddedYet, andOr);
+                    clauseToBuild.append(clauseForThisField.get());
+                    noClausesHaveBeenAddedYet = false;
+                }
+            }
+        } catch(IllegalAccessException | NoNameForDatabaseClauseException exception){
+            exception.printStackTrace();
         }
 
-        makeTheClause();
-        return clause;
+        return clauseToBuild.toString();
+    }
+
+    private void insertANDIfThisIsntTheFirstClause(StringBuilder clauseToBuild,
+                                                     boolean noClausesHaveBeenAddedYet,
+                                                     String andOr){
+        if (!noClausesHaveBeenAddedYet){
+            clauseToBuild.append(" ");
+            clauseToBuild.append(andOr);
+            clauseToBuild.append(" ");
+        }
     }
 
 
@@ -114,41 +140,6 @@ public class ComparingObjectsToMakeJPQLClauses<T> {
     }
 
 
-
-    private void makeTheClause(){
-        try{
-            var clauseToBuild = new StringBuilder();
-            boolean noClausesHaveBeenAddedYet = true;
-
-            for (Field field : fields) {
-                field.setAccessible(true);
-                var lowestValue = Optional.ofNullable(field.get(lowest));
-                var biggestValue = Optional.ofNullable(field.get(biggest));
-                var equalValue = Optional.ofNullable(field.get(equal));
-
-                Optional<String> clauseForThisField = fieldComparisonForDatabase.clause(mapAnObjectToFormattedForDatabase(lowestValue), mapAnObjectToFormattedForDatabase(biggestValue), mapAnObjectToFormattedForDatabase(equalValue), Optional.of(field.getName()), classAliasForQuery, ">", "<", andOr);
-
-                if (clauseForThisField.isPresent()){
-                    if (!noClausesHaveBeenAddedYet){
-                        clauseToBuild.append(" ");
-                        clauseToBuild.append(andOr);
-                        clauseToBuild.append(" ");
-                    }
-
-                    clauseToBuild.append(clauseForThisField.get());
-                    noClausesHaveBeenAddedYet = false;
-                }
-            } // end of for loop
-
-            if (noClausesHaveBeenAddedYet){
-                itWasCheckedAndThereIsNoClause = true;
-            } else {
-                clause = Optional.of(clauseToBuild.toString());
-            }
-        } catch(IllegalAccessException | NoNameForDatabaseClauseException exception){
-            exception.printStackTrace();
-        }
-    }
 
     private Optional<FormattedForDatabase> mapAnObjectToFormattedForDatabase(Optional objectOptional){
         if (objectOptional.isEmpty()){

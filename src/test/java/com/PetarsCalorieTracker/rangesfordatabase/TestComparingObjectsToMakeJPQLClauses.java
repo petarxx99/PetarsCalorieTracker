@@ -22,10 +22,10 @@ public class TestComparingObjectsToMakeJPQLClauses {
     public void testThatInitializationWentFine(){
         var person = new PersonBasicInfo("Jovan", "Petrovic", "jovan", "Serbia",
                 LocalDate.of(2020, 2, 20), "jovan@gmail.com", new byte[]{2,3});
-        var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>("person", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>( new FieldComparisonFirstMethod(),
                 person, person, person,
                 "firstName", "lastName", "dateOfBirth");
-        var c2 = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>("person", "AND", new FieldComparisonFirstMethod(),
+        var c2 = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>(new FieldComparisonFirstMethod(),
                 person, person, person);
 
         c2.setNamesOfFieldsThatYouWantToCompare("firstName", "dateOfBirth");
@@ -39,15 +39,15 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var equalFood = new Food("tomatoes", null, null);
         String classAlias = "food";
 
-        var c = new ComparingObjectsToMakeJPQLClauses<Food>(classAlias, "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<Food>(new FieldComparisonFirstMethod(),
                 lowerFood, biggerFood, equalFood);
 
         String expected = classAlias + ".foodName='tomatoes' AND " +
                 classAlias + ".kcalPer100g>100 AND " +
                 classAlias + ".proteinsPer100g<5";
 
-        String actual = c.clause().orElse("NOT WORKING");
-        assertTrue(expected.equals(actual));
+        String actual = c.clause(classAlias, "AND").orElse("NOT WORKING");
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -59,15 +59,15 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var personEqual = new PersonBasicInfo(null, "James", null,null,
                 null, null, null);
 
-        var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>("person", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>( new FieldComparisonFirstMethod(),
                 personLowest, personBiggest, personEqual);
 
         String expected = "person.lastName='James' AND " +
                 "person.dateOfBirth<'2002-08-20' AND " +
                 "person.dateOfBirth>'1991-10-22'";
 
-        String actual = c.clause().orElse("NOT WORKING");
-        assertTrue(expected.equals(actual));
+        String actual = c.clause("person", "AND").orElse("NOT WORKING");
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -77,15 +77,15 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var biggestConsumedFoodQuantity = new ConsumedFoodQuantity(LocalDateTime.of(2021, 4,20,10,51,12), foodQuantity, null);
         var equalConsumedFoodQuantity = new ConsumedFoodQuantity(null, foodQuantity, new PersonWeightLoss());
 
-        var c = new ComparingObjectsToMakeJPQLClauses<ConsumedFoodQuantity>("cfq", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<ConsumedFoodQuantity>( new FieldComparisonFirstMethod(),
                 lowestConsumedFoodQuantity, biggestConsumedFoodQuantity, equalConsumedFoodQuantity);
         c.setNamesOfFieldsThatYouWantToCompare("timeOfConsumption");
 
         String expected = "cfq.timeOfConsumption<'2021-04-20 10:51:12' AND " +
                 "cfq.timeOfConsumption>'2021-03-21 11:34:56'";
 
-        String actual = c.clause().orElse("NOT WORKING");
-        assertTrue(expected.equals(actual));
+        String actual = c.clause("cfq", "AND").orElse("NOT WORKING");
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -96,15 +96,15 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var equalFood = new Food("tomatoes", null, null);
         String classAlias = "food";
 
-        var c = new ComparingObjectsToMakeJPQLClauses<Food>(classAlias, "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<Food>(new FieldComparisonFirstMethod(),
                 lowerFood, biggerFood, equalFood);
 
         String expected = classAlias + ".foodName='tomatoes' AND " +
                 classAlias + ".kcalPer100g>50.52 AND " +
                 classAlias + ".proteinsPer100g<5.34";
 
-        String actual = c.clause().orElse("NOT WORKING");
-        assertTrue(expected.equals(actual));
+        String actual = c.clause(classAlias, "AND").orElse("NOT WORKING");
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -113,12 +113,12 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var biggestDay = new DailyMass(80.3f, null, null);
         var equalDay = new DailyMass(null, LocalDate.of(2019,4,20), null);
 
-        var c = new ComparingObjectsToMakeJPQLClauses<DailyMass>("dm", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<DailyMass>( new FieldComparisonFirstMethod(),
                 lowestDay, biggestDay, equalDay);
 
         String expected = "dm.massInKilograms<80.3 AND dm.massInKilograms>80.1 AND "
                 + "dm.date='2019-04-20'";
-        String actual = c.clause().orElse("NOT WORKING");
+        String actual = c.clause("dm", "AND").orElse("NOT WORKING");
         assertEquals(expected, actual);
     }
 
@@ -128,21 +128,21 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var biggestPerson = new PersonWeightLoss(null, null);
         var equalPerson = new PersonWeightLoss(null, (short)187);
 
-        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>("p", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>(new FieldComparisonFirstMethod(),
                 lowestPerson, biggestPerson, equalPerson);
 
         String expected = "p.heightInCentimeters=187";
-        String actual = c.clause().orElse("NOT WORKING");
+        String actual = c.clause("p", "AND").orElse("NOT WORKING");
         assertEquals(expected, actual);
     }
 
     @Test
     public void testThatWhenAllParametersAreNullEmptyOptionalIsReturned(){
         var person = new PersonWeightLoss(null, null);
-        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>("p", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>(new FieldComparisonFirstMethod(),
                 person, person, person);
 
-        Optional<String> actualOptional = c.clause();
+        Optional<String> actualOptional = c.clause("p", "AND");
         assertTrue(actualOptional.isEmpty());
     }
 
@@ -152,11 +152,11 @@ public class TestComparingObjectsToMakeJPQLClauses {
         var biggestPerson = new PersonWeightLoss(null, null);
         var equalPerson = new PersonWeightLoss(null, (short)187);
 
-        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>("p", "AND", new FieldComparisonFirstMethod(),
+        var c = new ComparingObjectsToMakeJPQLClauses<PersonWeightLoss>( new FieldComparisonFirstMethod(),
                 lowestPerson, biggestPerson, equalPerson);
         c.setNamesOfFieldsThatYouWantToCompare(); // No fields on which clause is created.
 
-        Optional<String> actualOptional = c.clause();
+        Optional<String> actualOptional = c.clause("p", "AND");
         assertTrue(actualOptional.isEmpty());
     }
 

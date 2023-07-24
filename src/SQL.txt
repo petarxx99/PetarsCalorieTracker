@@ -1,5 +1,5 @@
 GRANT ALL ON kalorije.* TO 'user23'@'localhost';
 
 
-CREATE TABLE authentication_token(user_id bigint not null primary key, token_value varbinary(256) not null, expiration timestamp not null, moment_of_creation timestamp, is_valid tinyint not null, CONSTRAINT auth_token_user_id_constraint FOREIGN KEY(user_id) REFERENCES people_basic_info(person_id)) engine=innoDB
+CREATE TABLE authentication_token(user_id bigint not null primary key, token_value varbinary(256) not null, expiration timestamp not null, moment_of_creation timestamp, is_valid tinyint not null default 0, CONSTRAINT auth_token_user_id_constraint FOREIGN KEY(user_id) REFERENCES people_basic_info(person_id)) engine=innoDB
 DEFAULT CHARSET=utf8;
