@@ -49,13 +49,14 @@ public class PersonWeightLossService {
     }
 
     public List<PersonWeightLoss> queryBasedOnPersonFoodConsumedFoodDailyMass(
-            @NonNull QueryClauseMaker personBasicInfo,
-            @NonNull QueryClauseMaker food,
-            @NonNull QueryClauseMaker consumedFoodQuantity,
-            @NonNull QueryClauseMaker dailyMass){
+            @NonNull Optional<QueryClauseMaker> personBasicInfo,
+            @NonNull Optional<QueryClauseMaker> food,
+            @NonNull Optional<QueryClauseMaker> consumedFoodQuantity,
+            @NonNull Optional<QueryClauseMaker> dailyMass){
 
         StringBuilder clause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity);
-        Optional<String> dailyMassClause = dailyMass.clause(DAILY_MASSES_ALIAS, "AND");
+        Optional<String> dailyMassClause = dailyMass.isEmpty()? Optional.empty() :
+                dailyMass.get().clause(DAILY_MASSES_ALIAS, "AND");
         addClauseAndReturnTrueIfClauseIsAdded(clause, dailyMassClause);
 
         String query = PERSON_WITH_DAILY_MASS + " WHERE " + clause.toString();
@@ -63,9 +64,9 @@ public class PersonWeightLossService {
     }
 
     public List<PersonWeightLoss> queryBasedOnPersonFoodAndConsumedFood(
-            @NonNull QueryClauseMaker personBasicInfo,
-            @NonNull QueryClauseMaker food,
-            @NonNull QueryClauseMaker consumedFoodQuantity){
+            @NonNull Optional<QueryClauseMaker> personBasicInfo,
+            @NonNull Optional<QueryClauseMaker> food,
+            @NonNull Optional<QueryClauseMaker> consumedFoodQuantity){
 
         String whereClause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity).toString();
         String query = PERSON_WITHOUT_DAILY_MASS + " WHERE " + whereClause;
@@ -131,12 +132,15 @@ public class PersonWeightLossService {
 
 
 
-    private StringBuilder makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(@NonNull QueryClauseMaker personBasicInfo,
-                                                                                   @NonNull QueryClauseMaker food,
-                                                                                   @NonNull QueryClauseMaker consumedFoodQuantity){
-        Optional<String> personClause = personBasicInfo.clause(PEOPLE_BASIC_INFO_ALIAS, "AND");
-        Optional<String> foodClause = food.clause(FOOD_ALIAS, "AND");
-        Optional<String> consumedFoodQuantityClause = consumedFoodQuantity.clause(CONSUMED_FOOD_QUANTITY_ALIAS, "AND");
+    private StringBuilder makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(@NonNull Optional<QueryClauseMaker> personBasicInfo,
+                                                                                   @NonNull Optional<QueryClauseMaker> food,
+                                                                                   @NonNull Optional<QueryClauseMaker> consumedFoodQuantity){
+        Optional<String> personClause = personBasicInfo.isEmpty()? Optional.empty() :
+                personBasicInfo.get().clause(PEOPLE_BASIC_INFO_ALIAS, "AND");
+        Optional<String> foodClause = food.isEmpty()? Optional.empty() :
+                food.get().clause(FOOD_ALIAS, "AND");
+        Optional<String> consumedFoodQuantityClause = consumedFoodQuantity.isEmpty()? Optional.empty() :
+                consumedFoodQuantity.get().clause(CONSUMED_FOOD_QUANTITY_ALIAS, "AND");
 
         return addClausesTogether(personClause, foodClause, consumedFoodQuantityClause);
     }
