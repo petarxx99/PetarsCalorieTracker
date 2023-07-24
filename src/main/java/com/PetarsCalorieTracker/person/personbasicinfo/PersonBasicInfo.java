@@ -69,6 +69,7 @@ public class PersonBasicInfo {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
+        this.username = username;
     }
 
     public PersonBasicInfo(Long id,  String firstName,  String lastName, String username, String countryOfOrigin,  LocalDate dateOfBirth,  String email,  byte[] password) {
