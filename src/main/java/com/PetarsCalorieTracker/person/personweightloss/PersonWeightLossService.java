@@ -48,6 +48,12 @@ public class PersonWeightLossService {
         this.repository = repository;
     }
 
+    public Optional<PersonWeightLoss> findById(long id){
+        return repository.findById(id);
+    }
+
+
+
     public List<PersonWeightLoss> queryBasedOnPersonFoodConsumedFoodDailyMass(
             @NonNull Optional<QueryClauseMaker> personBasicInfo,
             @NonNull Optional<QueryClauseMaker> food,

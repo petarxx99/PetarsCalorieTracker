@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 public interface AuthenticationTokenRepository extends JpaRepository<AuthenticationToken, Long> {
 
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE AuthenticationToken a SET a.isValid=true WHERE " +

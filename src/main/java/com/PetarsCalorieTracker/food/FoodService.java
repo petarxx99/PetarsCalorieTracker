@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodService {
@@ -17,6 +18,18 @@ public class FoodService {
     @Autowired
     public FoodService(FoodRepository repository){
         this.repository = repository;
+    }
+
+    public Optional<Food> findFoodById(long id){
+        return repository.findById(id);
+    }
+
+    public void deleteFoodById(long id){
+        repository.deleteById(id);
+    }
+
+    public void save(Food food){
+        repository.save(food);
     }
 
     public List<Food> getFoodByKcal(@NonNull double minKcalPer100g,

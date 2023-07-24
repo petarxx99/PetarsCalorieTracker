@@ -36,7 +36,7 @@ public interface PersonBasicInfoRepository extends JpaRepository<PersonBasicInfo
     @Query(value =
             "UPDATE PersonBasicInfo person SET person.password = :new_password WHERE " +
                     "person.id = :id")
-    public int updatePersonsPasswordFindHimById(@Param("id") long id, @Param("new_password") String newPassword);
+    public int updatePersonsPasswordFindHimById(@Param("id") long id, @Param("new_password") byte[] newPassword);
 
 
 
