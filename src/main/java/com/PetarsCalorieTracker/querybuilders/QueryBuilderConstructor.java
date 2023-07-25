@@ -1,5 +1,8 @@
 package com.PetarsCalorieTracker.querybuilders;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class QueryBuilderConstructor implements QueryBuilder, QueryFromBuilder, QueryBuilderClausePhase{
 
     private StringBuilder query = null;
