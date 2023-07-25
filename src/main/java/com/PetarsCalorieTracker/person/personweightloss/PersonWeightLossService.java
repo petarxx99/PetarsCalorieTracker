@@ -80,8 +80,7 @@ public class PersonWeightLossService {
             @NonNull Optional<QueryClauseMaker> dailyMass){
 
         StringBuilder clause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity);
-        Optional<String> dailyMassClause = dailyMass.isEmpty()? Optional.empty() :
-                dailyMass.get().clause(DAILY_MASSES_ALIAS, "AND");
+        Optional<String> dailyMassClause = QueryClauseMaker.clause(dailyMass, DAILY_MASSES_ALIAS, "AND");
         clausesCombiner.addClauseAndReturnTrueIfClauseIsAdded(clause, dailyMassClause);
 
         String query = queryBuilder.addSelect(SELECT).addFrom(FROM_WITH_DAILY_MASS)
