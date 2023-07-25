@@ -160,12 +160,9 @@ public class PersonWeightLossService {
     private StringBuilder makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(@NonNull Optional<QueryClauseMaker> personBasicInfo,
                                                                                    @NonNull Optional<QueryClauseMaker> food,
                                                                                    @NonNull Optional<QueryClauseMaker> consumedFoodQuantity){
-        Optional<String> personClause = personBasicInfo.isEmpty()? Optional.empty() :
-                personBasicInfo.get().clause(PEOPLE_BASIC_INFO_ALIAS, "AND");
-        Optional<String> foodClause = food.isEmpty()? Optional.empty() :
-                food.get().clause(FOOD_ALIAS, "AND");
-        Optional<String> consumedFoodQuantityClause = consumedFoodQuantity.isEmpty()? Optional.empty() :
-                consumedFoodQuantity.get().clause(CONSUMED_FOOD_QUANTITY_ALIAS, "AND");
+        Optional<String> personClause = QueryClauseMaker.clause(personBasicInfo, PEOPLE_BASIC_INFO_ALIAS, "AND");
+        Optional<String> foodClause = QueryClauseMaker.clause(food, FOOD_ALIAS, "AND");
+        Optional<String> consumedFoodQuantityClause = QueryClauseMaker.clause(consumedFoodQuantity, CONSUMED_FOOD_QUANTITY_ALIAS, "AND");
 
         return clausesCombiner.addClausesTogether(personClause, foodClause, consumedFoodQuantityClause);
     }
