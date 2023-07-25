@@ -1,6 +1,6 @@
 package com.PetarsCalorieTracker.querybuilders;
 
 public interface QueryBuilderClausePhase {
-    public String addClause(String clause, String firstWordOfTheClauseProbablyWhere);
+    public String addClause(String firstWordOfTheClauseProbablyWhere, String clause);
     public String buildQuery();
 }

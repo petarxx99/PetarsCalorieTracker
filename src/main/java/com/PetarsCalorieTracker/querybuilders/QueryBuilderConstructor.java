@@ -21,7 +21,7 @@ public class QueryBuilderConstructor implements QueryBuilder, QueryFromBuilder, 
     }
 
     @Override
-    public String addClause(String clause, String firstWordOfTheClauseProbablyWhere){
+    public String addClause(String firstWordOfTheClauseProbablyWhere, String clause){
         if(clause == null) return query.toString();
 
         if (clause.trim().equals("")) return query.toString();

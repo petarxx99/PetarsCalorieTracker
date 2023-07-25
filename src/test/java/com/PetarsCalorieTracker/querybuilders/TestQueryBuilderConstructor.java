@@ -12,7 +12,7 @@ public class TestQueryBuilderConstructor {
 
         String actual = builder.addSelect("SELECT *")
                 .addFrom("FROM Person p LEFT JOIN Authentication")
-                .addClause("p.firstName LIKE 'Joh' AND p.lastName LIKE 'Smi'", "WHERE");
+                .addClause("WHERE","p.firstName LIKE 'Joh' AND p.lastName LIKE 'Smi'");
         String expected = "SELECT * FROM Person p LEFT JOIN Authentication WHERE p.firstName LIKE 'Joh' AND p.lastName LIKE 'Smi'";
         assertEquals(expected, actual);
     }

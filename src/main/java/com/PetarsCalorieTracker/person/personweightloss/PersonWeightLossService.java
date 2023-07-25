@@ -84,7 +84,7 @@ public class PersonWeightLossService {
         clausesCombiner.addClauseAndReturnTrueIfClauseIsAdded(clause, dailyMassClause);
 
         String query = queryBuilder.addSelect(SELECT).addFrom(FROM_WITH_DAILY_MASS)
-                .addClause(clause.toString(), "WHERE");
+                .addClause( "WHERE", clause.toString());
         return entityManager.createQuery(query, PersonWeightLoss.class).getResultList();
     }
 
@@ -95,7 +95,7 @@ public class PersonWeightLossService {
 
         String whereClause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity).toString();
         String query = queryBuilder.addSelect(SELECT).addFrom(PERSON_WITHOUT_DAILY_MASS)
-                .addClause(whereClause, "WHERE");
+                .addClause( "WHERE", whereClause);
         return entityManager.createQuery(query, PersonWeightLoss.class).getResultList();
     }
 
