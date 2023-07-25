@@ -12,5 +12,11 @@ public class DailyMassService {
         this.repository = repository;
     }
 
+    public void save(DailyMass dailyMass){
+        repository.save(dailyMass);
+    }
 
+    public void delete(long id){
+        repository.deleteById(id);
+    }
 }
