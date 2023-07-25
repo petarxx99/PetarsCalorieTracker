@@ -1,4 +1,4 @@
-package com.PetarsCalorieTracker.person;
+package com.PetarsCalorieTracker.person.dailymass;
 
 
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;

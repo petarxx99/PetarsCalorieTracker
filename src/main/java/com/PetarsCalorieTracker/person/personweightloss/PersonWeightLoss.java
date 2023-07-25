@@ -1,11 +1,10 @@
 package com.PetarsCalorieTracker.person.personweightloss;
 
 import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
-import com.PetarsCalorieTracker.person.DailyMass;
+import com.PetarsCalorieTracker.person.dailymass.DailyMass;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
-import org.springframework.lang.NonNull;
 
 import java.util.Set;
 

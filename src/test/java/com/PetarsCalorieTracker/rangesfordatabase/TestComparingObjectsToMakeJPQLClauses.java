@@ -3,7 +3,7 @@ package com.PetarsCalorieTracker.rangesfordatabase;
 import com.PetarsCalorieTracker.food.Food;
 import com.PetarsCalorieTracker.food.FoodQuantity;
 import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
-import com.PetarsCalorieTracker.person.DailyMass;
+import com.PetarsCalorieTracker.person.dailymass.DailyMass;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import org.junit.jupiter.api.Test;
