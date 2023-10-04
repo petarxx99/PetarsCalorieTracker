@@ -1,6 +1,7 @@
 package com.PetarsCalorieTracker.person.personweightloss;
 
 import com.PetarsCalorieTracker.constants.Constants;
+import com.PetarsCalorieTracker.database.SQLSanitizer;
 import com.PetarsCalorieTracker.querybuilders.QueryBuilder;
 import com.PetarsCalorieTracker.rangesfordatabase.QueryClauseMaker;
 import com.PetarsCalorieTracker.rangesfordatabase.clausecombiners.ClausesCombiner;
@@ -60,11 +61,14 @@ public class PersonWeightLossService {
 
     private QueryBuilder queryBuilder;
 
+    private SQLSanitizer sqlSanitizer;
+
     @Autowired
-    public PersonWeightLossService(PersonWeightLossRepository repository, ClausesCombiner clausesCombiner, QueryBuilder queryBuilder) {
+    public PersonWeightLossService(PersonWeightLossRepository repository, ClausesCombiner clausesCombiner, QueryBuilder queryBuilder, SQLSanitizer sqlSanitizer) {
         this.repository = repository;
         this.clausesCombiner = clausesCombiner;
         this.queryBuilder = queryBuilder;
+        this.sqlSanitizer = sqlSanitizer;
     }
 
     public Optional<PersonWeightLoss> findById(long id){
@@ -83,8 +87,9 @@ public class PersonWeightLossService {
         Optional<String> dailyMassClause = QueryClauseMaker.clause(dailyMass, DAILY_MASSES_ALIAS, "AND");
         clausesCombiner.addClauseAndReturnTrueIfClauseIsAdded(clause, dailyMassClause);
 
-        String query = queryBuilder.addSelect(SELECT).addFrom(FROM_WITH_DAILY_MASS)
+        String unsafeQuery = queryBuilder.addSelect(SELECT).addFrom(FROM_WITH_DAILY_MASS)
                 .addClause( "WHERE", clause.toString());
+        String query = sqlSanitizer.sanitize(unsafeQuery);
         return entityManager.createQuery(query, PersonWeightLoss.class).getResultList();
     }
 
@@ -94,8 +99,9 @@ public class PersonWeightLossService {
             @NonNull Optional<QueryClauseMaker> consumedFoodQuantity){
 
         String whereClause = makeAClauseForPersonBasicInfoFoodAndConsumedFoodQuantity(personBasicInfo, food, consumedFoodQuantity).toString();
-        String query = queryBuilder.addSelect(SELECT).addFrom(PERSON_WITHOUT_DAILY_MASS)
+        String unsafeQuery = queryBuilder.addSelect(SELECT).addFrom(PERSON_WITHOUT_DAILY_MASS)
                 .addClause( "WHERE", whereClause);
+        String query = sqlSanitizer.sanitize(unsafeQuery);
         return entityManager.createQuery(query, PersonWeightLoss.class).getResultList();
     }
 
