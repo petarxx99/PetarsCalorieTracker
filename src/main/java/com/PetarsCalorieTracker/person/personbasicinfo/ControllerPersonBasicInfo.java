@@ -3,11 +3,10 @@ package com.PetarsCalorieTracker.person.personbasicinfo;
 import com.PetarsCalorieTracker.controllers.MyResponse;
 import com.PetarsCalorieTracker.person.roles.Role;
 import com.PetarsCalorieTracker.person.roles.Roles;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -48,6 +47,12 @@ public class ControllerPersonBasicInfo {
         });
         service.save(person);
         return MyResponse.positive();
+    }
+
+    @GetMapping("/get_my_info")
+    @CrossOrigin(originPatterns = {"*"})
+    public PersonBasicInfo getMyInfo(Authentication authentication){
+        return service.findByUsername(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Your username wasn't found."));
     }
 
 }
