@@ -44,6 +44,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @CrossOrigin(originPatterns = {"*"})
     public MyResponse login(@RequestBody UsernamePassword usernamePassword){
         Optional<PersonBasicInfo> personOptional = personBasicInfoService.findByUsername(usernamePassword.username());
         if (personOptional.isEmpty()){

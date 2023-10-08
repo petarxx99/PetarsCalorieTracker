@@ -25,6 +25,7 @@ public class ControllerPersonBasicInfo {
     }
 
     @PostMapping("/auth/register")
+    @CrossOrigin(originPatterns = {"*"})
     public MyResponse postPersonBasicInfo(@RequestBody PersonBasicInfo person){
         String username = person.getUsername();
         String email = person.getEmail();
