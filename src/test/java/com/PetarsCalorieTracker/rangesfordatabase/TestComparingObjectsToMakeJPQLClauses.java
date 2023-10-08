@@ -21,7 +21,7 @@ public class TestComparingObjectsToMakeJPQLClauses {
     @Test
     public void testThatInitializationWentFine(){
         var person = new PersonBasicInfo("Jovan", "Petrovic", "jovan", "Serbia",
-                LocalDate.of(2020, 2, 20), "jovan@gmail.com", new byte[]{2,3});
+                LocalDate.of(2020, 2, 20), "jovan@gmail.com", "23");
         var c = new ComparingObjectsToMakeJPQLClauses<PersonBasicInfo>( new FieldComparisonFirstMethod(),
                 person, person, person,
                 "firstName", "lastName", "dateOfBirth");

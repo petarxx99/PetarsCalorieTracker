@@ -12,14 +12,13 @@ import java.util.Optional;
 public interface PersonBasicInfoRepository extends JpaRepository<PersonBasicInfo, Long> {
 
     @Query(value =
-    "SELECT person FROM PersonBasicInfo person LEFT JOIN FETCH " +
-            "person.authenticationToken " +
+    "SELECT person FROM PersonBasicInfo person LEFT JOIN FETCH person.roles " +
             "WHERE person.email = :email")
     public Optional<PersonBasicInfo> findByEmail(@Param("email") String email);
 
     @Query(value =
             "SELECT person FROM PersonBasicInfo person LEFT JOIN FETCH " +
-                    "person.authenticationToken " +
+                    "person.roles " +
                     "WHERE person.username = :username")
     public Optional<PersonBasicInfo> findByUsername(@Param("username") String username);
 

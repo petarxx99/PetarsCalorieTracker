@@ -1,12 +1,15 @@
 package com.PetarsCalorieTracker.person.personbasicinfo;
 
-import com.PetarsCalorieTracker.person.authentication.AuthenticationToken;
+
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
+import com.PetarsCalorieTracker.person.roles.Role;
+import com.PetarsCalorieTracker.person.roles.Roles;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "people_basic_info",
@@ -46,8 +49,9 @@ public class PersonBasicInfo {
     private String email;
 
 
-    @Column(name = "password", nullable = false, columnDefinition = "varbinary(512) NOT NULL")
-    private byte[] password;
+    /* not private String password and then columnDefition = "varbinary(512) NOT NULL" */
+    @Column(name = "password", nullable = false, columnDefinition = "varchar(512) NOT NULL")
+    private String password;
 
 
     @OneToOne(mappedBy = "personBasicInfo")
@@ -55,14 +59,17 @@ public class PersonBasicInfo {
     @PrimaryKeyJoinColumn
     private PersonWeightLoss personWeightLossInfo;
 
-    @OneToOne(mappedBy = "personBasicInfo", fetch=FetchType.EAGER)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private AuthenticationToken authenticationToken;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="users_roles",
+            joinColumns = {@JoinColumn(name="fk_user_id")},
+    inverseJoinColumns = {@JoinColumn(name="fk_role_id")})
+    private Set<Roles> roles;
 
     public PersonBasicInfo(){}
 
-    public PersonBasicInfo(String firstName, String lastName, String username, String countryOfOrigin, LocalDate dateOfBirth,  String email,  byte[] password) {
+    public PersonBasicInfo(String firstName, String lastName, String username, String countryOfOrigin, LocalDate dateOfBirth,  String email,  String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.countryOfOrigin = countryOfOrigin;
@@ -72,7 +79,7 @@ public class PersonBasicInfo {
         this.username = username;
     }
 
-    public PersonBasicInfo(Long id,  String firstName,  String lastName, String username, String countryOfOrigin,  LocalDate dateOfBirth,  String email,  byte[] password) {
+    public PersonBasicInfo(Long id,  String firstName,  String lastName, String username, String countryOfOrigin,  LocalDate dateOfBirth,  String email,  String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -150,20 +157,21 @@ public class PersonBasicInfo {
         this.email = email;
     }
 
-    public byte[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(byte[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public AuthenticationToken getAuthenticationToken() {
-        return authenticationToken;
+
+    public Set<Roles> getRoles() {
+        return roles;
     }
 
-    public void setAuthenticationToken(AuthenticationToken authenticationToken) {
-        this.authenticationToken = authenticationToken;
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
     }
 
     @Override
