@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,11 +23,12 @@ public class TokenService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(Authentication authentication){
+    public String generateToken(String username, Collection<? extends GrantedAuthority> authorities){
         Instant now = Instant.now();
         Instant whenItExpires = now.plus(7, ChronoUnit.DAYS);
 
-        String scope = authentication.getAuthorities().stream()
+
+        String scope = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
 
@@ -34,7 +36,7 @@ public class TokenService {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(whenItExpires)
-                .subject(authentication.getName())
+                .subject(username)
                 .claim("scope", scope)
                 .build();
 

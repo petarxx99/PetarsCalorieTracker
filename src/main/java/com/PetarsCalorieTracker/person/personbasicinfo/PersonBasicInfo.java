@@ -64,7 +64,7 @@ public class PersonBasicInfo {
 
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinTable(name="users_roles",
             joinColumns = {@JoinColumn(name="fk_user_id")},
     inverseJoinColumns = {@JoinColumn(name="fk_role_id")})
