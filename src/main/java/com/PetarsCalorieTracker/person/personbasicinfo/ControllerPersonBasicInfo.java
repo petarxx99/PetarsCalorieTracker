@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +40,11 @@ public class ControllerPersonBasicInfo {
 
         String encodedPassword = passwordEncoder.encode(person.getPassword());
         person.setPassword(encodedPassword);
-        person.addRole(new Roles(Role.ROLE_USER));
+        person.setRoles(new HashSet<>(){
+            {
+                add(new Roles(Role.ROLE_USER));
+            }
+        });
         service.save(person);
         return MyResponse.positive();
     }
