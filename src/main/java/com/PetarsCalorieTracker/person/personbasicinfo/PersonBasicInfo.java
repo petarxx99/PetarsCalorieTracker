@@ -9,6 +9,9 @@ import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -173,6 +176,15 @@ public class PersonBasicInfo {
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
+
+    public void addRole(Roles newRole){
+        if (roles == null){
+           roles = new HashSet<Roles>();
+        }
+
+        roles.add(newRole);
+    }
+
 
     @Override
     public String toString() {

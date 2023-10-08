@@ -1,6 +1,8 @@
 package com.PetarsCalorieTracker.person.personbasicinfo;
 
 import com.PetarsCalorieTracker.controllers.MyResponse;
+import com.PetarsCalorieTracker.person.roles.Role;
+import com.PetarsCalorieTracker.person.roles.Roles;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +39,7 @@ public class ControllerPersonBasicInfo {
 
         String encodedPassword = passwordEncoder.encode(person.getPassword());
         person.setPassword(encodedPassword);
+        person.addRole(new Roles(Role.ROLE_USER));
         service.save(person);
         return MyResponse.positive();
     }
