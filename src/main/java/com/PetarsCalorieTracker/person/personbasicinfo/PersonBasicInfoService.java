@@ -59,6 +59,9 @@ public class PersonBasicInfoService {
     public Optional<PersonBasicInfo> findByEmail(@NonNull String email){
         return repository.findByEmail(email);
     }
-    
+
+    public List<PersonBasicInfo> findAll(){
+        return repository.findAll();
+    }
 
 }
