@@ -2,6 +2,7 @@ package com.PetarsCalorieTracker.controllers.authentication;
 
 
 import com.PetarsCalorieTracker.controllers.MyResponse;
+import com.PetarsCalorieTracker.controllers.authentication.passwordsmatcher.PasswordsMatcher;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfoService;
 import com.PetarsCalorieTracker.service.TokenService;
@@ -26,7 +27,7 @@ public class AuthenticationController {
     private final TokenService tokenService;
 
     private final PersonBasicInfoService personBasicInfoService;
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public AuthenticationController(TokenService tokenService, PersonBasicInfoService personBasicInfoService, PasswordEncoder passwordEncoder){
         this.tokenService = tokenService;
@@ -50,14 +51,14 @@ public class AuthenticationController {
         if (personOptional.isEmpty()){
             return MyResponse.negative("username/password", "Username or password is wrong.");
         }
-        PersonBasicInfo person = personOptional.get();
+        PersonBasicInfo personFromDatabase = personOptional.get();
 
-        String sentPassword = passwordEncoder.encode(usernamePassword.password());
-        if (!sentPassword.equals(person.getPassword())){
+        boolean passwordsMatch = passwordEncoder.matches(usernamePassword.password(), personFromDatabase.getPassword());
+        if (!passwordsMatch){
             return MyResponse.negative("username/password", "Username or password is wrong.");
         }
 
-        List<SimpleGrantedAuthority> authorities = person.getRoles().stream()
+        List<SimpleGrantedAuthority> authorities = personFromDatabase.getRoles().stream()
                 .map(oneRole -> new SimpleGrantedAuthority(oneRole.getRole().name()))
                 .collect(Collectors.toList());
 

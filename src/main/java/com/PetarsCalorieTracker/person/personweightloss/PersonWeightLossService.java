@@ -8,6 +8,7 @@ import com.PetarsCalorieTracker.rangesfordatabase.clausecombiners.ClausesCombine
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -106,6 +107,32 @@ public class PersonWeightLossService {
     }
 
 
+    public PersonWeightLoss getPersonByUsernameAndHisFoodAndWeightFromMomentAToMomentB(
+             String username,
+             LocalDateTime startMoment,
+             LocalDateTime endMoment){
+        return repository.getPersonByUsernameAndHisFoodAndWeightFromMomentAToMomentB(username, startMoment, endMoment);
+    }
+
+    public PersonWeightLoss getPersonByUsernameAndHisFoodFromMomentAToMomentB(
+            String username,
+            LocalDateTime startMoment,
+            LocalDateTime endMoment
+    ){
+        return repository.getPersonByUsernameAndHisFoodFromMomentAToMomentB(username, startMoment, endMoment);
+    }
+
+    public PersonWeightLoss getPersonByUsernameHisFoodWhenHeAteOverXNumberOfCalories(
+            @Param("username") String username,
+            @Param("minimum_kcal_times_100") BigDecimal minimumKcalTimes100,
+            @Param("start_moment") LocalDateTime startMoment,
+            @Param("end_moment") LocalDateTime endMoment){
+        return repository.getPersonByUsernameHisFoodWhenHeAteOverXNumberOfCalories(username, minimumKcalTimes100, startMoment, endMoment);
+    }
+
+    public PersonWeightLoss getPersonByUsername(String username){
+        return repository.getPersonByUsername(username);
+    }
 
     public List<PersonWeightLoss> getPersonByFirstNameAndHisFood(@NonNull String firstName){
         return repository.getPersonByFirstNameAndHisFood(firstName);

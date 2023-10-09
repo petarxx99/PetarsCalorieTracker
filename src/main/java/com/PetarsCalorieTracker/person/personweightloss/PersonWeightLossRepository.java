@@ -1,5 +1,7 @@
 package com.PetarsCalorieTracker.person.personweightloss;
 
+import com.PetarsCalorieTracker.person.dailymass.DailyCalories;
+import com.PetarsCalorieTracker.person.dailymass.DailyMassAndCalories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,6 +39,11 @@ public interface PersonWeightLossRepository extends JpaRepository<PersonWeightLo
     public PersonWeightLoss getPersonById(@Param("id") long id);
 
 
+    @Query(value = "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+            "personWL.personBasicInfo person LEFT JOIN FETCH " +
+            "personWL.dailyMassesInKilograms WHERE " +
+            "person.username = :username")
+    public PersonWeightLoss getPersonByUsername(@Param("username") String username);
 
 
 
@@ -69,6 +76,20 @@ public interface PersonWeightLossRepository extends JpaRepository<PersonWeightLo
             @Param("start_moment") LocalDateTime startMoment,
             @Param("end_moment") LocalDateTime endMoment);
 
+    @Query(value = "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+            "personWL.personBasicInfo person LEFT JOIN FETCH " +
+            "personWL.dailyMassesInKilograms dm LEFT JOIN FETCH " +
+            "personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+            "cfq.consumedFood food " +
+            "WHERE " +
+            "person.username = :username AND " +
+            "(cfq.timeOfConsumption BETWEEN :start_moment AND :end_moment) AND " +
+            "(dm.date BETWEEN DATE(:start_moment) AND DATE(:end_moment))")
+    public PersonWeightLoss getPersonByUsernameAndHisFoodAndWeightFromMomentAToMomentB(
+            @Param("username") String username,
+            @Param("start_moment") LocalDateTime startMoment,
+            @Param("end_moment") LocalDateTime endMoment);
+
     @Query(value =
             "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
                     "personWL.personBasicInfo person LEFT JOIN FETCH " +
@@ -79,6 +100,20 @@ public interface PersonWeightLossRepository extends JpaRepository<PersonWeightLo
                     "(cfq.timeOfConsumption BETWEEN :start_moment AND :end_moment)")
     public PersonWeightLoss getPersonByIdAndHisFoodFromMomentAToMomentB(
             @Param("id") long id,
+            @Param("start_moment") LocalDateTime startMoment,
+            @Param("end_moment") LocalDateTime endMoment
+    );
+
+    @Query(value =
+            "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+                    "personWL.personBasicInfo person LEFT JOIN FETCH " +
+                    "personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+                    "cfq.consumedFood food " +
+                    "WHERE " +
+                    "person.username = :username AND " +
+                    "(cfq.timeOfConsumption BETWEEN :start_moment AND :end_moment)")
+    public PersonWeightLoss getPersonByUsernameAndHisFoodFromMomentAToMomentB(
+            @Param("username") String username,
             @Param("start_moment") LocalDateTime startMoment,
             @Param("end_moment") LocalDateTime endMoment
     );
@@ -124,5 +159,22 @@ public interface PersonWeightLossRepository extends JpaRepository<PersonWeightLo
             @Param("minimum_kcal_times_100") BigDecimal minimumKcalTimes100,
             @Param("start_moment") LocalDateTime startMoment,
             @Param("end_moment") LocalDateTime endMoment);
+
+    @Query(value =
+            "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+                    "personWL.personBasicInfo person LEFT JOIN FETCH " +
+                    "personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+                    "cfq.consumedFood food " +
+                    "WHERE person.username = :username AND " +
+                    "cfq.consumedFoodInGrams * food.kcalPer100g > :minimum_kcal_times_100 AND " +
+                    "cfq.timeOfConsumption BETWEEN :start_moment AND :end_moment")
+    public PersonWeightLoss getPersonByUsernameHisFoodWhenHeAteOverXNumberOfCalories(
+            @Param("username") String username,
+            @Param("minimum_kcal_times_100") BigDecimal minimumKcalTimes100,
+            @Param("start_moment") LocalDateTime startMoment,
+            @Param("end_moment") LocalDateTime endMoment);
+
+
+
 
 }
