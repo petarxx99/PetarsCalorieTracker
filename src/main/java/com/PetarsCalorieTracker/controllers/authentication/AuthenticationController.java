@@ -2,7 +2,6 @@ package com.PetarsCalorieTracker.controllers.authentication;
 
 
 import com.PetarsCalorieTracker.controllers.MyResponse;
-import com.PetarsCalorieTracker.controllers.authentication.passwordsmatcher.PasswordsMatcher;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfoService;
 import com.PetarsCalorieTracker.service.TokenService;

@@ -18,7 +18,8 @@ public interface PersonBasicInfoRepository extends JpaRepository<PersonBasicInfo
 
     @Query(value =
             "SELECT person FROM PersonBasicInfo person LEFT JOIN FETCH " +
-                    "person.roles " +
+                    "person.roles LEFT JOIN FETCH " +
+                    "person.personWeightLossInfo " +
                     "WHERE person.username = :username")
     public Optional<PersonBasicInfo> findByUsername(@Param("username") String username);
 

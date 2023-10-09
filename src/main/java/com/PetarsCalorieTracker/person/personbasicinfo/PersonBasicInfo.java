@@ -4,6 +4,7 @@ package com.PetarsCalorieTracker.person.personbasicinfo;
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
 import com.PetarsCalorieTracker.person.roles.Role;
 import com.PetarsCalorieTracker.person.roles.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
@@ -60,6 +61,7 @@ public class PersonBasicInfo {
     @OneToOne(mappedBy = "personBasicInfo")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @JsonIgnore
     private PersonWeightLoss personWeightLossInfo;
 
 

@@ -1,6 +1,7 @@
 package com.PetarsCalorieTracker.person.roles;
 
 import com.PetarsCalorieTracker.person.personbasicinfo.PersonBasicInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -18,6 +19,7 @@ public class Roles {
 
     /* roles is the name of the field of the PersonBasicInfo class. */
     @ManyToMany(cascade=CascadeType.ALL, mappedBy="roles")
+    @JsonIgnore
     private Set<PersonBasicInfo> users;
 
 

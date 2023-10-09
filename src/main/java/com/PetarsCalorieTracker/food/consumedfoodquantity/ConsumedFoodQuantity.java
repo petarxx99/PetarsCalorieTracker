@@ -3,6 +3,7 @@ package com.PetarsCalorieTracker.food.consumedfoodquantity;
 import com.PetarsCalorieTracker.food.Food;
 import com.PetarsCalorieTracker.food.FoodQuantity;
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
@@ -38,6 +39,7 @@ public class ConsumedFoodQuantity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_person_that_eats_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JsonIgnore
     private PersonWeightLoss personWeightLoss;
 
     public ConsumedFoodQuantity(){}

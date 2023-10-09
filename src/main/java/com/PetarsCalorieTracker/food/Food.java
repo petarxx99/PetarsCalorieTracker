@@ -3,6 +3,7 @@ package com.PetarsCalorieTracker.food;
 import com.PetarsCalorieTracker.constants.Constants;
 import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
 import com.PetarsCalorieTracker.price.Price;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 
@@ -52,6 +53,7 @@ public class Food {
 
     @OneToMany(mappedBy = "consumedFood", fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JsonIgnore
     private Set<ConsumedFoodQuantity> consumedFoodQuantities;
 
 
