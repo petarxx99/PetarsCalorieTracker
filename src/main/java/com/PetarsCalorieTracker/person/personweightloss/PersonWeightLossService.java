@@ -2,6 +2,8 @@ package com.PetarsCalorieTracker.person.personweightloss;
 
 import com.PetarsCalorieTracker.constants.Constants;
 import com.PetarsCalorieTracker.database.SQLSanitizer;
+import com.PetarsCalorieTracker.food.consumedfoodquantity.ConsumedFoodQuantity;
+import com.PetarsCalorieTracker.person.dailymass.DailyMass;
 import com.PetarsCalorieTracker.querybuilders.QueryBuilder;
 import com.PetarsCalorieTracker.rangesfordatabase.QueryClauseMaker;
 import com.PetarsCalorieTracker.rangesfordatabase.clausecombiners.ClausesCombiner;
@@ -10,13 +12,17 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -110,28 +116,56 @@ public class PersonWeightLossService {
     public PersonWeightLoss getPersonByUsernameAndHisFoodAndWeightFromMomentAToMomentB(
              String username,
              LocalDateTime startMoment,
-             LocalDateTime endMoment){
-        return repository.getPersonByUsernameAndHisFoodAndWeightFromMomentAToMomentB(username, startMoment, endMoment);
+             LocalDateTime endMoment) throws UsernameNotFoundException{
+        PersonWeightLoss person = repository.getPersonAndFoodByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username not found: " + username));
+
+        Set<ConsumedFoodQuantity> consumedFoodQuantities = person.getConsumedFoodQuantities().stream()
+                .filter(cfq -> cfq.getTimeOfConsumption().isAfter(startMoment) &&
+                        cfq.getTimeOfConsumption().isBefore(endMoment))
+                .collect(Collectors.toSet());
+        person.setConsumedFoodQuantities(consumedFoodQuantities);
+
+        LocalDate startDate = LocalDate.from(startMoment);
+        LocalDate endDate = LocalDate.from(endMoment);
+
+        Set<DailyMass> dailyMasses = person.getDailyMassesInKilograms().stream()
+                .filter(dm -> (dm.getDate().isAfter(startDate) || dm.getDate().isEqual(startDate)) &&
+                        (dm.getDate().isBefore(endDate) || dm.getDate().isEqual(endDate)))
+                .collect(Collectors.toSet());
+        person.setDailyMassesInKilograms(dailyMasses);
+
+        return person;
     }
 
     public PersonWeightLoss getPersonByUsernameAndHisFoodFromMomentAToMomentB(
             String username,
             LocalDateTime startMoment,
             LocalDateTime endMoment
-    ){
-        return repository.getPersonByUsernameAndHisFoodFromMomentAToMomentB(username, startMoment, endMoment);
+    ) throws UsernameNotFoundException{
+        PersonWeightLoss person = repository.getPersonAndFoodByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("username not found: " + username));
+        Set<ConsumedFoodQuantity> consumedFoodQuantity = person.getConsumedFoodQuantities().stream().
+                filter(cfq -> cfq.getTimeOfConsumption().isAfter(startMoment) &&
+                        cfq.getTimeOfConsumption().isBefore(endMoment))
+                .collect(Collectors.toSet());
+        person.setConsumedFoodQuantities(consumedFoodQuantity);
+        return person;
     }
 
     public PersonWeightLoss getPersonByUsernameHisFoodWhenHeAteOverXNumberOfCalories(
-            @Param("username") String username,
-            @Param("minimum_kcal_times_100") BigDecimal minimumKcalTimes100,
-            @Param("start_moment") LocalDateTime startMoment,
-            @Param("end_moment") LocalDateTime endMoment){
+            String username,
+            BigDecimal minimumKcalTimes100,
+            LocalDateTime startMoment,
+            LocalDateTime endMoment){
         return repository.getPersonByUsernameHisFoodWhenHeAteOverXNumberOfCalories(username, minimumKcalTimes100, startMoment, endMoment);
     }
 
-    public PersonWeightLoss getPersonByUsername(String username){
+    public Optional<PersonWeightLoss> getPersonByUsername(String username){
         return repository.getPersonByUsername(username);
+    }
+
+    public Optional<PersonWeightLoss> getPersonAndFoodByUsername(@NonNull String username){
+        return repository.getPersonAndFoodByUsername(username);
     }
 
     public List<PersonWeightLoss> getPersonByFirstNameAndHisFood(@NonNull String firstName){

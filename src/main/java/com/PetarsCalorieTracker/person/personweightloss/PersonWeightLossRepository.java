@@ -43,9 +43,17 @@ public interface PersonWeightLossRepository extends JpaRepository<PersonWeightLo
             "personWL.personBasicInfo person LEFT JOIN FETCH " +
             "personWL.dailyMassesInKilograms WHERE " +
             "person.username = :username")
-    public PersonWeightLoss getPersonByUsername(@Param("username") String username);
+    public Optional<PersonWeightLoss> getPersonByUsername(@Param("username") String username);
 
 
+    @Query(value = "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+            "personWL.personBasicInfo person LEFT JOIN FETCH " +
+            "personWL.dailyMassesInKilograms dm LEFT JOIN FETCH " +
+            "personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+            "cfq.consumedFood food " +
+            "WHERE " +
+            "person.username = :username")
+    public Optional<PersonWeightLoss> getPersonAndFoodByUsername(@Param("username") String username);
 
 
     @Query(value = "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +

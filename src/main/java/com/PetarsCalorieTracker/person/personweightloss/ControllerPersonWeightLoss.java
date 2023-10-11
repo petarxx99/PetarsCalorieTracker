@@ -3,6 +3,7 @@ package com.PetarsCalorieTracker.person.personweightloss;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -43,4 +44,20 @@ public class ControllerPersonWeightLoss {
         System.out.println("\nKRAJ\n");
         return person;
     }
+
+    @CrossOrigin(originPatterns = {"*"})
+    @GetMapping("/get_person_weight_loss")
+    public PersonWeightLoss getPersonWeightLoss(Authentication authentication){
+        String username = authentication.getName();
+        return personWeightLossService.getPersonByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username not found: " + username));
+    }
+
+    @CrossOrigin(originPatterns={"*"})
+    @GetMapping("/get_person_weight_loss_and_food")
+    public PersonWeightLoss getPersonWeightLossAndFood(Authentication authentication){
+        String username = authentication.getName();
+        return personWeightLossService.getPersonAndFoodByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username not found: " + username));
+    }
+
+
 }
