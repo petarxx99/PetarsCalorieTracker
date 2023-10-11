@@ -1,4 +1,4 @@
-package com.PetarsCalorieTracker.person.dailymass;
+package com.PetarsCalorieTracker.person.dailymass.dailymasscalories;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +13,20 @@ public class DailyMassAndCalories {
 
     public DailyMassAndCalories(Float massInKilograms, BigDecimal caloriesConsumed, LocalDate date) {
         this.massInKilograms = massInKilograms;
+        this.caloriesConsumed = caloriesConsumed;
+        this.date = date;
+    }
+
+    public DailyMassAndCalories(LocalDate date) {
+        this.date = date;
+    }
+
+    public DailyMassAndCalories(Float massInKilograms, LocalDate date) {
+        this.massInKilograms = massInKilograms;
+        this.date = date;
+    }
+
+    public DailyMassAndCalories(BigDecimal caloriesConsumed, LocalDate date) {
         this.caloriesConsumed = caloriesConsumed;
         this.date = date;
     }

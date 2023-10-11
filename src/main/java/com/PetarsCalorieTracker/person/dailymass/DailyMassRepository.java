@@ -1,10 +1,16 @@
 package com.PetarsCalorieTracker.person.dailymass;
 
+import com.PetarsCalorieTracker.person.dailymass.dailymasscalories.DailyCalories;
+import com.PetarsCalorieTracker.person.dailymass.dailymasscalories.DailyMassAndCalories;
+import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
+import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface DailyMassRepository extends JpaRepository<DailyMass, Long> {
 
@@ -27,7 +33,8 @@ public interface DailyMassRepository extends JpaRepository<DailyMass, Long> {
     public List<DailyMassAndCalories> getDailyMassAndCaloriesMultipliedBy100ByUsername(@Param("username") String username);
 
     @Query(value =
-            "SELECT outer_query.date, outer_query.calories_consumed_times_100 / 100.0 as calories_consumed " +
+            "SELECT outer_query.calories_consumed_times_100 / 100.0 as caloriesConsumed " +
+                    "outer_query.date as date " +
                     "FROM (" +
                     "SELECT DATE(cfq.time_of_consumption) as date, " +
                     "SUM(cfq.consumed_food_in_grams * food.kcal_per_100g) as calories_consumed_times_100 " +
@@ -39,10 +46,12 @@ public interface DailyMassRepository extends JpaRepository<DailyMass, Long> {
                     "GROUP BY DATE(cfq.time_of_consumption) " +
                     ") outer_query",
             nativeQuery = true)
-    public List<DailyCalories> getCaloriesByDayByUsername(@Param("username") String username);
+    public List<Tuple> getCaloriesByDayByUsername(@Param("username") String username);
+
 
     @Query(value =
-            "SELECT outer_query.date, outer_query.calories_consumed_times_100 / 100.0 as calories_consumed " +
+            "SELECT outer_query.calories_consumed_times_100 / 100.0 as caloriesConsumed, " +
+                    "outer_query.date as date " +
                     "FROM (" +
                     "SELECT DATE(cfq.time_of_consumption) as date, " +
                     "SUM(cfq.consumed_food_in_grams * food.kcal_per_100g) as calories_consumed_times_100 " +
@@ -50,10 +59,24 @@ public interface DailyMassRepository extends JpaRepository<DailyMass, Long> {
                     "cfq.fk_consumed_food_id = food.food_id " +
                     "LEFT JOIN people_basic_info pbi ON " +
                     "cfq.fk_person_that_eats_id = pbi.person_id " +
-                    "WHERE pbi.person_id = :id " +
+                    "WHERE pbi.username = :username AND " +
+                    "DATE(cfq.time_of_consumption) >= :start_date AND " +
+                    "DATE(cfq.time_of_consumption) <= :end_date " +
                     "GROUP BY DATE(cfq.time_of_consumption) " +
                     ") outer_query",
             nativeQuery = true)
-    public List<DailyCalories> getCaloriesByDayById(@Param("id") long id);
+    public List<Tuple> getCaloriesByDayByUsernameFromDayAToDayB(
+            @Param("username") String username,
+            @Param("start_date") LocalDate startDate,
+            @Param("end_date") LocalDate endDate);
 
+
+    @Query(value = "SELECT personWL FROM PersonWeightLoss personWL LEFT JOIN FETCH " +
+            "personWL.personBasicInfo person LEFT JOIN FETCH " +
+            "personWL.dailyMassesInKilograms dm LEFT JOIN FETCH " +
+            "personWL.consumedFoodQuantities cfq LEFT JOIN FETCH " +
+            "cfq.consumedFood food " +
+            "WHERE " +
+            "person.username = :username")
+    public Optional<PersonWeightLoss> getPersonAndFoodByUsername(@Param("username") String username);
 }

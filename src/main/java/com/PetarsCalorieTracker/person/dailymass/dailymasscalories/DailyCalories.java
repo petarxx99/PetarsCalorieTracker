@@ -1,7 +1,10 @@
-package com.PetarsCalorieTracker.person.dailymass;
+package com.PetarsCalorieTracker.person.dailymass.dailymasscalories;
+
+import jakarta.persistence.Entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 
 public class DailyCalories {
 

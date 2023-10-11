@@ -1,7 +1,5 @@
 package com.PetarsCalorieTracker.person.personweightloss;
 
-import com.PetarsCalorieTracker.person.dailymass.DailyCalories;
-import com.PetarsCalorieTracker.person.dailymass.DailyMassAndCalories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
