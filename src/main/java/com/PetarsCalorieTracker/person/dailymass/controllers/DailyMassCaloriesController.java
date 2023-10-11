@@ -36,7 +36,6 @@ public class DailyMassCaloriesController {
             @RequestParam("end_date") LocalDate endDate){
 
         String username = authentication.getName();
-
         return service.getDailyMassAndCaloriesByUsername(username, startDate, endDate);
     }
 
@@ -45,13 +44,10 @@ public class DailyMassCaloriesController {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List<DailyMassAndCalories> getDailyMassAndCaloriesOnDaysWhenBothExist(
             Authentication authentication,
-            @RequestParam("start_date") String startDateString,
-            @RequestParam("end_date") String endDateString){
+            @RequestParam("start_date") LocalDate startDate,
+            @RequestParam("end_date") LocalDate endDate){
 
-        LocalDate startDate = LocalDate.parse(startDateString, dateTimeFormatter);
-        LocalDate endDate = LocalDate.parse(endDateString, dateTimeFormatter);
         String username = authentication.getName();
-
         return service.getDailyMassAndCaloriesWhenBothExistByUsername(username, startDate, endDate);
     }
 
