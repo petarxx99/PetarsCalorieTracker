@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -258,6 +260,43 @@ public class Food {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void update(Food otherFood){
+        if (otherFood.getFoodName() != null) {
+            setFoodName(otherFood.getFoodName());
+        }
+        if (otherFood.getPricePer100g() != null){
+            setPricePer100g(otherFood.getPricePer100g());
+        }
+
+        if (otherFood.getKcalPer100g() != null) {
+            setKcalPer100g(otherFood.getKcalPer100g());
+        }
+        if (otherFood.getProteinsPer100g() != null) {
+            setProteinsPer100g(otherFood.getProteinsPer100g());
+        }
+        if (otherFood.getFatsPer100g() != null){
+            setFatsPer100g(otherFood.getFatsPer100g());
+        }
+        if (otherFood.getCarbsPer100g() != null){
+            setCarbsPer100g(otherFood.getCarbsPer100g());
+        }
+
+
+        if (otherFood.getBadTransFatsPer100g() != null){
+            setBadTransFatsPer100g(otherFood.getBadTransFatsPer100g());
+        }
+        if (otherFood.getSaturatedFatsPer100g() != null){
+            setSaturatedFatsPer100g(otherFood.getSaturatedFatsPer100g());
+        }
+        if (otherFood.getFiberPer100g() != null){
+            setFiberPer100g(otherFood.getFiberPer100g());
+        }
+        if (otherFood.getOnePortionSizeInGrams() != null){
+            setOnePortionSizeInGrams(otherFood.getOnePortionSizeInGrams());
+        }
+
     }
 
 }

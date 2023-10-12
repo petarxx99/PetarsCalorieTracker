@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
 
@@ -28,4 +29,6 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     public List<Food> getFoodByMaximumKcalToProteinsRatio(@Param("maxKcalToProteinsRatio") BigDecimal maxKcalToProteinsRatio);
 
 
+    @Query(value = "SELECT f FROM Food f WHERE trim(lower(f.foodName)) = trim(lower(:food_name))")
+    Optional<Food> findFoodByName(@Param("food_name") String foodName);
 }

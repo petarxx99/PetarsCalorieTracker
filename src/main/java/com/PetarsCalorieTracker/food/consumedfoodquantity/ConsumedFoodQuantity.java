@@ -116,4 +116,13 @@ public class ConsumedFoodQuantity {
                 ", consumedFood=" + consumedFood +
                 '}';
     }
+
+    public void update(ConsumedFoodQuantity otherConsumedFoodQuantity) {
+        if (otherConsumedFoodQuantity.getTimeOfConsumption() != null){
+            setTimeOfConsumption(otherConsumedFoodQuantity.getTimeOfConsumption());
+        }
+        if (otherConsumedFoodQuantity.getConsumedFoodInGrams() != null){
+            setConsumedFoodInGrams(otherConsumedFoodQuantity.getConsumedFoodInGrams());
+        }
+    }
 }

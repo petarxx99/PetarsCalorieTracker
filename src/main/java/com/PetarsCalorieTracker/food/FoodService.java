@@ -1,5 +1,11 @@
 package com.PetarsCalorieTracker.food;
 
+import com.PetarsCalorieTracker.database.SQLSanitizer;
+import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
+import com.PetarsCalorieTracker.querybuilders.QueryBuilder;
+import com.PetarsCalorieTracker.rangesfordatabase.QueryClauseMaker;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
@@ -12,12 +18,24 @@ import java.util.Optional;
 @Service
 public class FoodService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private FoodRepository repository;
+    private final FoodRepository repository;
+
+    private final QueryBuilder queryBuilder;
+
+    private final SQLSanitizer sqlSanitizer;
+
+   private final static String FOOD_ALIAS = "f";
 
     @Autowired
-    public FoodService(FoodRepository repository){
+    public FoodService(FoodRepository repository,
+                       QueryBuilder queryBuilder,
+                       SQLSanitizer sqlSanitizer){
         this.repository = repository;
+        this.queryBuilder = queryBuilder;
+        this.sqlSanitizer = sqlSanitizer;
     }
 
     public Optional<Food> findFoodById(long id){
@@ -51,4 +69,27 @@ public class FoodService {
     }
 
 
+    public List<Food> customFoodQuery(
+            @NonNull QueryClauseMaker foodClauseMaker){
+
+
+        String clause = foodClauseMaker.clause(FOOD_ALIAS, "AND").orElse(null);
+        final String SELECT = "SELECT " + FOOD_ALIAS;
+        final String FROM = "FROM Food " + FOOD_ALIAS;
+
+        String unsafeQuery = queryBuilder.addSelect(SELECT).addFrom(FROM)
+                .addClause("WHERE", clause);
+        String query = sqlSanitizer.sanitize(unsafeQuery);
+        System.out.println("query: " + query);
+        return entityManager.createQuery(query, Food.class).getResultList();
+    }
+
+
+    public Optional<Food> findFoodByName(@NonNull String foodName) {
+        return repository.findFoodByName(foodName.trim());
+    }
+
+    public void deleteById(long id){
+        repository.deleteById(id);
+    }
 }

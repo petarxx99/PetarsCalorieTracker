@@ -2,6 +2,7 @@ package com.PetarsCalorieTracker.person.dailymass;
 
 
 import com.PetarsCalorieTracker.person.personweightloss.PersonWeightLoss;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
@@ -28,6 +29,7 @@ public class DailyMass {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_id_of_persons_mass")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JsonIgnore
     private PersonWeightLoss personWeightLoss;
 
 
