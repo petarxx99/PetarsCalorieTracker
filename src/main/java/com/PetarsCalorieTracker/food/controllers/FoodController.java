@@ -44,7 +44,7 @@ public class FoodController {
     }
 
     @CrossOrigin(originPatterns={"*"})
-    @PostMapping("/update")
+    @PutMapping("/update")
     @Secured({"ROLE_ADMIN"})
     public MyResponse updateFood(@RequestBody Food food) throws IllegalAccessException {
         Optional<Food> foodFromDatabaseOptional = service.findFoodById(food.getFoodId());

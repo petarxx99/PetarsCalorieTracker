@@ -51,7 +51,7 @@ public class ConsumedFoodQuantityController {
     }
 
     @CrossOrigin(originPatterns = {"*"})
-    @PostMapping("/update")
+    @PutMapping("/update")
     public MyResponse update(@RequestBody ConsumedFoodQuantity consumedFoodQuantity,
                              Authentication authentication){
 
