@@ -49,6 +49,43 @@ public class ControllerPersonBasicInfo {
         return MyResponse.positive();
     }
 
+
+
+    @CrossOrigin(originPatterns = {"*"})
+    @PutMapping("/update")
+    public MyResponse update(@RequestBody PersonBasicInfoOldPassword personAndPassword,
+                       Authentication authentication){
+        PersonBasicInfo updateInfo = personAndPassword.person();
+        String oldPassword = personAndPassword.oldPassword();
+        String username = authentication.getName();
+
+        PersonBasicInfo personFromDatabase = service.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username " + username + ", not found"));
+
+        String passwordFromDatabase = personFromDatabase.getPassword();
+        boolean passwordsMatch = passwordEncoder.matches(oldPassword, passwordFromDatabase);
+
+        if (!passwordsMatch){
+            return MyResponse.negative("password", "password doesn't match");
+        }
+
+        if (service.usernameExistsInTheDatabase(updateInfo.getUsername())){
+            return MyResponse.negative("username", "username already exists");
+        }
+        if (service.emailExistsInTheDatabase(updateInfo.getEmail())){
+            return MyResponse.negative("email", "email already exists");
+        }
+
+        String newPassword = updateInfo.getPassword();
+
+        if (oldPassword != null && newPassword != null){
+            String newPasswordEncoded = passwordEncoder.encode(newPassword);
+            updateInfo.setPassword(newPasswordEncoded);
+        }
+
+        personFromDatabase.updateYourselfWith(updateInfo);
+        return MyResponse.positive();
+    }
+
     @GetMapping("/get_my_info")
     @CrossOrigin(originPatterns = {"*"})
     public PersonBasicInfo getMyInfo(Authentication authentication){

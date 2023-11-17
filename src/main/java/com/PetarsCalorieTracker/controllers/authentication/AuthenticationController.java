@@ -34,14 +34,6 @@ public class AuthenticationController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/token")
-    public String token(Authentication authentication){
-        LOG.debug("Token requested by " + authentication.getName());
-        String token = tokenService.generateToken(authentication.getName(), authentication.getAuthorities());
-        LOG.debug("Token granted: " + token);
-
-        return token;
-    }
 
     @PostMapping("/login")
     @CrossOrigin(originPatterns = {"*"})

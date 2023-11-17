@@ -1,9 +1,11 @@
 package com.PetarsCalorieTracker.person.personbasicinfo;
 
+import com.PetarsCalorieTracker.controllers.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +64,27 @@ public class PersonBasicInfoService {
 
     public List<PersonBasicInfo> findAll(){
         return repository.findAll();
+    }
+
+    public boolean usernameExistsInTheDatabase(String newUsername){
+        if (newUsername != null){
+            boolean usernameExists = findByUsername(newUsername).isPresent();
+            if (usernameExists){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean emailExistsInTheDatabase(String newEmail){
+        if (newEmail != null){
+            boolean emailExists = findByEmail(newEmail).isPresent();
+            if (emailExists){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

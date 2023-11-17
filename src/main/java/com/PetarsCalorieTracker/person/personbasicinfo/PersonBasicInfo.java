@@ -200,4 +200,33 @@ public class PersonBasicInfo {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public void updateYourselfWith(PersonBasicInfo updateInfo) {
+        if (updateInfo == null){
+            return;
+        }
+
+        if (updateInfo.getFirstName() != null){
+            setFirstName(updateInfo.getFirstName());
+        }
+        if (updateInfo.getLastName() != null){
+            setLastName(updateInfo.getLastName());
+        }
+        if (updateInfo.getUsername() != null){
+            setUsername(updateInfo.getUsername());
+        }
+        if (updateInfo.getCountryOfOrigin() != null){
+            setCountryOfOrigin(updateInfo.getCountryOfOrigin());
+        }
+        if (updateInfo.getDateOfBirth() != null){
+            setDateOfBirth(updateInfo.getDateOfBirth());
+        }
+        if (updateInfo.getPassword() != null){
+            setPassword(updateInfo.getPassword());
+        }
+        if (updateInfo.getEmail() != null){
+            setEmail(updateInfo.getEmail());
+        }
+
+    }
 }
