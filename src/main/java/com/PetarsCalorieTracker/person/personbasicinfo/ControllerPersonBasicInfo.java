@@ -29,6 +29,9 @@ public class ControllerPersonBasicInfo {
         String username = person.getUsername();
         String email = person.getEmail();
 
+        if (person.getPassword() == null || person.getPassword().isEmpty()){
+            return MyResponse.negative("password", "No password");
+        }
         Optional<PersonBasicInfo> personByUsername = service.findByUsername(username);
         if (personByUsername.isPresent()){
             return MyResponse.negative("username", "Username already exists.");

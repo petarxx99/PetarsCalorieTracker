@@ -14,7 +14,7 @@ public class QueryBuilderConstructor implements QueryBuilder, QueryFromBuilder, 
 
     private StringBuilder query = null;
 
-    private QueryBuilderConstructor(){}
+    public QueryBuilderConstructor(){}
 
     @Override
     public QueryFromBuilder addSelect(String select) {
